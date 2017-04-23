@@ -59,11 +59,11 @@ class Application extends Component {
 
     render(props, state) {
         const {
-            files,
+            boxPath,
             connected,
-            synced,
-            clipboard,
+            files,
             notification,
+            synced,
         } = this.state;
 
         const totalSize = filesize(files.reduce((total, file) => total + file.size, 0), { fixed: 1 }).human('si');
@@ -90,7 +90,7 @@ class Application extends Component {
                     <div class="pane-group">
                         <div class="pane">
                             { notification ? <Notification>{notification}</Notification> : null }
-                            { connected ? <FileList files={files} synced={synced} clipboard={clipboard} /> : <Center>Connecting…</Center>}
+                            { connected ? <FileList files={files} synced={synced} boxPath={boxPath} /> : <Center>Connecting…</Center>}
                         </div>
                     </div>
                 </div>
