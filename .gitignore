@@ -1,0 +1,5 @@
+node_modules
+**/*bundle.js
+.vscode
+dist
+**/*.DS_Store

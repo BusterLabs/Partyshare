@@ -1,0 +1,21 @@
+{
+    "env": {
+        "browser": true,
+        "node": true
+    },
+    "extends": ["@vimeo/eslint-config-player/es6", "standard-preact"],
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "rules": {
+        "comma-dangle": [
+            "error",
+            "always-multiline"
+        ],
+        "react/jsx-indent": ["warn", 4],
+        "jsx-quotes": ["error", "prefer-double"]
+    }
+}
