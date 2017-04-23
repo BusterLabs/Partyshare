@@ -51,9 +51,7 @@
     "artifactName": "${productName}.${ext}",
     "productName": "Partyshare",
     "icon": "build_assets/partyshare.icns",
-    "mac": {
-      "category": "storage"
-    },
+    "forceCodeSigning": true,
     "dmg": {
       "background": "build_assets/background.tiff",
       "title": "Install ${productName}"
