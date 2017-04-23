@@ -104,9 +104,9 @@ autoUpdater.on('update-downloaded', (ev, info) => {
     logger.info('[autoUpdate] Notifying user of update');
     dialog.showMessageBox({
         type: 'info',
-        title: 'Outdated app',
-        message: 'An update for partyshare is avalable, quit and install?',
-        buttons: ['Sure', 'No'],
+        title: 'Update available',
+        message: 'An update for Partyshare is available, ok to restart?',
+        buttons: ['Restart', 'Ignore'],
     }, (buttonIndex) => {
         if (buttonIndex === 0) {
             logger.info('[autoUpdate] Quitting and installing....');
