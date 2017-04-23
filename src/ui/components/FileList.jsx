@@ -3,7 +3,7 @@ import FileListItem from 'components/FileListItem';
 import Center from 'components/Center';
 import { GATEWAY_URL } from '../../electron/constants';
 import { Button } from 'preact-photon';
-import { shell } from 'electron';
+import { shell, ipcRenderer } from 'electron';
 
 const FileList = ({ files, synced, boxPath }) => {
     if (files.length < 1 && !synced) {
@@ -17,7 +17,10 @@ const FileList = ({ files, synced, boxPath }) => {
             <Center>
                 <p>Move some files to your folder to share</p>
                 <Button
-                  onClick={() => shell.openItem(boxPath)}
+                  onClick={() => {
+                      shell.openItem(boxPath);
+                      ipcRenderer.send('hide');
+                  }}
                 >
                     Open Folder
                 </Button>

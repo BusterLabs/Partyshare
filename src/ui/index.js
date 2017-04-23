@@ -54,6 +54,7 @@ class Application extends Component {
     }
 
     openFolder() {
+        ipcRenderer.send('hide');
         shell.openItem(this.state.boxPath);
     }
 

@@ -58,6 +58,10 @@ ipcMain.on('request-state', (event) => {
     event.sender.send('send-state', ipfsBox.state);
 });
 
+ipcMain.on('hide', () => {
+    mb.hideWindow();
+});
+
 ipcMain.on('quit', () => {
     mb.app.quit();
 });

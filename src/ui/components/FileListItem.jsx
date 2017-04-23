@@ -21,7 +21,10 @@ const FileListItem = ({ file, url }) => (
             </div>,
             <div
               className="file_list_item--button"
-              onClick={() => shell.openExternal(url)}
+              onClick={() => {
+                  shell.openExternal(url);
+                  ipcRenderer.send('hide');
+              }}
             >
                 <span class="icon icon-forward" />
             </div>,
