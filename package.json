@@ -4,11 +4,12 @@
   "description": "A file sharing app using IPFS (InterPlanetary File System)",
   "main": "src/electron/main.js",
   "scripts": {
+    "build": "yarn fix_asar && webpack",
     "electron": "ENV=dev electron src/electron/main.js",
     "fix_asar": "sed -i '' 's|run(cmd, args|run(cmd.replace(\"app.asar\", \"app.asar.unpacked\"), args|' node_modules/ipfsd-ctl/src/exec.js",
     "lint": "eslint --ext .js --ext .jsx --format=node_modules/eslint-formatter-pretty src/",
-    "preversion": "yarn fix_asar && webpack",
-    "release": "build",
+    "preversion": "yarn build",
+    "release": "yarn build && build",
     "start": "yarn watch & yarn electron",
     "watch": "webpack --progress --colors --watch"
   },
