@@ -11,7 +11,7 @@ const INDEX_PATH = format({
     protocol: 'file:',
     slashes: true,
 });
-const IPFS_FOLDER = join(homedir(), 'partyshare');
+const IPFS_FOLDER = join(homedir(), 'Partyshare');
 const IPFS_REPO = join(homedir(), '.partyshare-repo');
 
 module.exports = {
