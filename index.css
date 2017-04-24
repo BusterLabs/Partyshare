@@ -1,3 +1,16 @@
+.title {
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin: 0;
+    padding: 0;
+}
+
+.screenshot {
+    width: 250px;
+    margin: 30px;
+}
+
 .download_button {
     background: 0 0;
     border: none;
@@ -7,7 +20,6 @@
     min-width: 64px;
     padding: 0 16px;
     display: inline-block;
-    font-family: "Roboto","Helvetica","Arial",sans-serif;
     font-size: 14px;
     font-weight: 500;
     text-transform: uppercase;
@@ -22,8 +34,8 @@
     line-height: 36px;
     color: #4A4A4A;
     background-color: #41F5C0;
-    margin-top: 30px;
 }
+
 
 .download_button:active {
     box-shadow: 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12), 0 2px 4px -1px rgba(0,0,0,.2);
