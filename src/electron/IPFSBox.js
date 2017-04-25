@@ -21,13 +21,13 @@ class IPFSBox extends EventEmitter {
         } = Object.assign(DEFAULTS, options);
 
         this._bindMethods();
-        this.setState({
+        this._state = {
             files: [],
             connected: false,
             synced: false,
             daemon: null,
             boxPath,
-        });
+        };
 
         if (autoStart) {
             this.start();
@@ -87,11 +87,19 @@ class IPFSBox extends EventEmitter {
         return this._state;
     }
 
-    setState(state) {
-        logger.info('[IPFSBox] setState');
-        this._state = Object.assign({}, this._state, state);
-        this.emit('state-change', this.state);
-        return Promise.resolve(this.state);
+    setState(newState) {
+        logger.info('[IPFSBox] setState', newState);
+
+        if (this._state &&
+            this._state.files &&
+            newState.files &&
+            newState.files.length > this._state.files.length) {
+            this.emit('files-added');
+        }
+
+        this._state = Object.assign({}, this._state, newState);
+        this.emit('state-change', this._state);
+        return Promise.resolve(this._state);
     }
 
     start() {
