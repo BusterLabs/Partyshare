@@ -21,13 +21,13 @@ class IPFSBox extends EventEmitter {
         } = Object.assign(DEFAULTS, options);
 
         this._bindMethods();
-        this.setState({
+        this._state = {
             files: [],
             connected: false,
             synced: false,
             daemon: null,
             boxPath,
-        });
+        };
 
         if (autoStart) {
             this.start();
@@ -39,7 +39,7 @@ class IPFSBox extends EventEmitter {
     _bindMethods() {
         logger.info('[IPFSBox] _bindMethods');
         this._addFilesToIPFS = this._addFilesToIPFS.bind(this);
-        this._mapPaths = this._mapPaths.bind(this);
+        this._mapFileData = this._mapFileData.bind(this);
         this._readAndSyncFiles = this._readAndSyncFiles.bind(this);
         this.setState = this.setState.bind(this);
         this.start = this.start.bind(this);
@@ -58,16 +58,26 @@ class IPFSBox extends EventEmitter {
         return this.state.daemon.files.add(files);
     }
 
-    _mapPaths(files) {
-        logger.info('[IPFSBox] _mapPaths');
-        files = files.map((file) => {
-            return Object.assign(file, {
-                path: join(this.state.boxPath, file.path),
-                relativePath: file.path,
+    _mapFileData(files) {
+        logger.info('[IPFSBox] _mapFileData');
+
+        const promises = files.map((file) => {
+            return new Promise((resolve, reject) => {
+                fs.stat(join(this.state.boxPath, file.path), (err, stats) => {
+                    if (err) {
+                        return reject(err);
+                    }
+
+                    resolve(Object.assign(file, {
+                        path: join(this.state.boxPath, file.path),
+                        relativePath: file.path,
+                        stats,
+                    }));
+                });
             });
         });
 
-        return Promise.resolve(files);
+        return Promise.all(promises);
     }
 
     _readAndSyncFiles() {
@@ -76,7 +86,7 @@ class IPFSBox extends EventEmitter {
 
         getFiles(this.state.boxPath)
             .then(this._addFilesToIPFS)
-            .then(this._mapPaths)
+            .then(this._mapFileData)
             .then((files) => this.setState({ files, synced: true }))
             .catch((e) => logger.error('[IPFSBox] _readAndSyncFiles: ', e));
     }
@@ -87,11 +97,19 @@ class IPFSBox extends EventEmitter {
         return this._state;
     }
 
-    setState(state) {
-        logger.info('[IPFSBox] setState');
-        this._state = Object.assign({}, this._state, state);
-        this.emit('state-change', this.state);
-        return Promise.resolve(this.state);
+    setState(newState) {
+        logger.info('[IPFSBox] setState', newState);
+
+        if (this._state &&
+            this._state.files &&
+            newState.files &&
+            newState.files.length > this._state.files.length) {
+            this.emit('files-added');
+        }
+
+        this._state = Object.assign({}, this._state, newState);
+        this.emit('state-change', this._state);
+        return Promise.resolve(this._state);
     }
 
     start() {

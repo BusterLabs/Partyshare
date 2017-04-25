@@ -21,8 +21,9 @@ const mb = menubar({
 });
 
 mb.on('ready', () => {
+    mb.showWindow();
+
     if (__DEV__) {
-        mb.showWindow();
         return;
     }
 
@@ -48,6 +49,11 @@ ipfsBox.on('state-change', () => {
     }
 
     mb.window.webContents.send('send-state', ipfsBox.state);
+});
+
+ipfsBox.on('files-added', () => {
+    logger.info('[ipfsBox] files-added');
+    mb.showWindow();
 });
 
 

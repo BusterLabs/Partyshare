@@ -15,18 +15,20 @@ const FileList = ({ files, synced, boxPath }) => {
     if (files.length < 1) {
         return (
             <Center>
-                <p>Move some files to your folder to share</p>
+                <p>Drag a file into your Partyshare folder to begin</p>
                 <Button
                   onClick={() => {
                       shell.openItem(boxPath);
                       ipcRenderer.send('hide');
                   }}
                 >
-                    Open Folder
+                    Reveal Folder
                 </Button>
             </Center>
         );
     }
+
+    files = files.sort((a, b) => new Date(b.stats.ctime) - new Date(a.stats.ctime));
 
     return (
         <ul className="file_list">

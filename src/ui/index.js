@@ -67,7 +67,7 @@ class Application extends Component {
             synced,
         } = this.state;
 
-        const totalSize = filesize(files.reduce((total, file) => total + file.size, 0), { fixed: 1 }).human('si');
+        const totalSize = filesize(files.reduce((total, file) => total + file.stats.size, 0), { fixed: 1 }).human('si');
 
         return (
             <div class="window"
