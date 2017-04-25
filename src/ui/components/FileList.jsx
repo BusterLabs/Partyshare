@@ -28,6 +28,8 @@ const FileList = ({ files, synced, boxPath }) => {
         );
     }
 
+    files = files.sort((a, b) => new Date(b.stats.ctime) - new Date(a.stats.ctime));
+
     return (
         <ul className="file_list">
             {files.map((file) => <FileListItem file={file} url={`${GATEWAY_URL}/${file.hash}`} />)}
