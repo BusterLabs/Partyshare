@@ -21,8 +21,9 @@ const mb = menubar({
 });
 
 mb.on('ready', () => {
+    mb.showWindow();
+
     if (__DEV__) {
-        mb.showWindow();
         return;
     }
 
