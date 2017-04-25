@@ -92,24 +92,6 @@ ipcMain.on('notification', (event, text) => {
 // https://github.com/electron-userland/electron-builder/wiki/Auto-Update#events
 // ___________________________________________________________________________
 
-autoUpdater.on('checking-for-update', () => {
-    logger.info('[autoUpdate] Checking for update...');
-});
-autoUpdater.on('update-available', (ev, info) => {
-    logger.info('[autoUpdate] Update available.');
-});
-autoUpdater.on('update-not-available', (ev, info) => {
-    logger.info('[autoUpdate] Update not available.');
-});
-autoUpdater.on('error', (ev, err) => {
-    logger.info('[autoUpdate] Error in auto-updater.', err);
-});
-autoUpdater.on('download-progress', (ev, progressObj) => {
-    logger.info('[autoUpdate] Download progress...');
-});
-autoUpdater.on('update-downloaded', (ev, info) => {
-    logger.info('[autoUpdate] Update downloaded');
-});
 autoUpdater.on('update-downloaded', (ev, info) => {
     logger.info('[autoUpdate] Notifying user of update');
     dialog.showMessageBox({
