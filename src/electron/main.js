@@ -1,10 +1,16 @@
 const { autoUpdater } = require('electron-updater');
-const { dialog } = require('electron');
-const { ipcMain } = require('electron');
+const {
+    dialog,
+    ipcMain,
+ } = require('electron');
 const IPFSBox = require('./IPFSBox.js');
 const logger = require('electron-log');
 const menubar = require('menubar');
-const { __DEV__, ICON_PATH, INDEX_PATH } = require('./constants');
+const {
+    __DEV__,
+    ICON_PATH,
+    INDEX_PATH,
+} = require('./constants');
 
 autoUpdater.logger = logger;
 autoUpdater.logger.transports.file.level = 'info';
@@ -36,6 +42,7 @@ mb.on('ready', () => {
 
 mb.on('after-create-window', () => {
     mb.window.webContents.send('send-state', ipfsBox.state);
+    mb.window.setMovable(false);
 
     if (__DEV__) {
         mb.window.openDevTools();
