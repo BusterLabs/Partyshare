@@ -8,7 +8,8 @@ const logger = require('electron-log');
 const menubar = require('menubar');
 const {
     __DEV__,
-    ICON_PATH,
+    LIGHT_MENUBAR_ICON_PATH,
+    DARK_MENUBAR_ICON_PATH,
     INDEX_PATH,
 } = require('./constants');
 
@@ -18,7 +19,7 @@ autoUpdater.logger.transports.file.level = 'info';
 const ipfsBox = new IPFSBox();
 
 const mb = menubar({
-    icon: ICON_PATH,
+    icon: DARK_MENUBAR_ICON_PATH,
     index: INDEX_PATH,
     preloadWindow: true,
     alwaysOnTop: __DEV__,
