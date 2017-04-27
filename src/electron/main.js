@@ -21,7 +21,11 @@ const mb = menubar({
 });
 
 mb.on('ready', () => {
-    mb.showWindow();
+
+    // Menubar flashes, the closes on start without a slight timeout
+    setTimeout(() => {
+        mb.showWindow();
+    }, 1000);
 
     if (__DEV__) {
         return;
@@ -36,6 +40,7 @@ mb.on('after-create-window', () => {
     if (__DEV__) {
         mb.window.openDevTools();
     }
+
 });
 
 mb.on('show', () => {
