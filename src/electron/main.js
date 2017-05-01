@@ -1,10 +1,17 @@
 const { autoUpdater } = require('electron-updater');
-const { dialog } = require('electron');
-const { ipcMain } = require('electron');
+const {
+    dialog,
+    ipcMain,
+ } = require('electron');
 const IPFSBox = require('./IPFSBox.js');
 const logger = require('electron-log');
 const menubar = require('menubar');
-const { __DEV__, ICON_PATH, INDEX_PATH } = require('./constants');
+const {
+    __DEV__,
+    LIGHT_MENUBAR_ICON_PATH,
+    DARK_MENUBAR_ICON_PATH,
+    INDEX_PATH,
+} = require('./constants');
 
 autoUpdater.logger = logger;
 autoUpdater.logger.transports.file.level = 'info';
@@ -12,7 +19,7 @@ autoUpdater.logger.transports.file.level = 'info';
 const ipfsBox = new IPFSBox();
 
 const mb = menubar({
-    icon: ICON_PATH,
+    icon: DARK_MENUBAR_ICON_PATH,
     index: INDEX_PATH,
     preloadWindow: true,
     alwaysOnTop: __DEV__,
@@ -21,7 +28,11 @@ const mb = menubar({
 });
 
 mb.on('ready', () => {
-    mb.showWindow();
+
+    // Menubar flashes, the closes on start without a slight timeout
+    setTimeout(() => {
+        mb.showWindow();
+    }, 1000);
 
     if (__DEV__) {
         return;
@@ -32,10 +43,12 @@ mb.on('ready', () => {
 
 mb.on('after-create-window', () => {
     mb.window.webContents.send('send-state', ipfsBox.state);
+    mb.window.setMovable(false);
 
     if (__DEV__) {
         mb.window.openDevTools();
     }
+
 });
 
 mb.on('show', () => {
@@ -92,24 +105,6 @@ ipcMain.on('notification', (event, text) => {
 // https://github.com/electron-userland/electron-builder/wiki/Auto-Update#events
 // ___________________________________________________________________________
 
-autoUpdater.on('checking-for-update', () => {
-    logger.info('[autoUpdate] Checking for update...');
-});
-autoUpdater.on('update-available', (ev, info) => {
-    logger.info('[autoUpdate] Update available.');
-});
-autoUpdater.on('update-not-available', (ev, info) => {
-    logger.info('[autoUpdate] Update not available.');
-});
-autoUpdater.on('error', (ev, err) => {
-    logger.info('[autoUpdate] Error in auto-updater.', err);
-});
-autoUpdater.on('download-progress', (ev, progressObj) => {
-    logger.info('[autoUpdate] Download progress...');
-});
-autoUpdater.on('update-downloaded', (ev, info) => {
-    logger.info('[autoUpdate] Update downloaded');
-});
 autoUpdater.on('update-downloaded', (ev, info) => {
     logger.info('[autoUpdate] Notifying user of update');
     dialog.showMessageBox({
