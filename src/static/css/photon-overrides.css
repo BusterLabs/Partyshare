@@ -92,14 +92,29 @@
     cursor: pointer;
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
 .notification {
     width: 80%;
-    background-color: #4A4A4A;
     border-radius: 5px;
     position: absolute;
     margin: 10px 10%;
     text-align: center;
     padding: 5px;
-    color: #fff;
     z-index: 100;
+    background-color: #41F5C0;
+    color: #4A4A4A;
+    animation: fadeIn 180ms ease-out;
+    animation-fill-mode: both;
 }

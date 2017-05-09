@@ -6,6 +6,11 @@ const {
 const IPFSBox = require('./IPFSBox.js');
 const logger = require('electron-log');
 const menubar = require('menubar');
+const fs = require('fs-extra');
+const {
+    basename,
+    join,
+} = require('path');
 const {
     __DEV__,
     LIGHT_MENUBAR_ICON_PATH,
@@ -33,6 +38,24 @@ mb.on('ready', () => {
     setTimeout(() => {
         mb.showWindow();
     }, 1000);
+
+    // Setup highlighted icon
+    mb.tray.setPressedImage(LIGHT_MENUBAR_ICON_PATH);
+
+    // Copy files dragged to menu bar into partyshare
+    mb.tray.on('drop-files', (event, files) => {
+
+        if (!ipfsBox.state.connected) {
+            return;
+        }
+
+        files.forEach((filePath) => {
+            const fileName = basename(filePath);
+            const newPath = join(ipfsBox.state.boxPath, fileName);
+            fs.copy(filePath, newPath);
+        });
+    });
+
 
     if (__DEV__) {
         return;
