@@ -90,6 +90,7 @@ ipfsBox.on('state-change', () => {
 ipfsBox.on('files-added', () => {
     logger.info('[ipfsBox] files-added');
     mb.showWindow();
+    mb.window.webContents.send('files-added');
 });
 
 
