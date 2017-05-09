@@ -1,14 +1,37 @@
+.icon,
 .title {
+    margin: 0 0 15px 0;
+}
+
+.description,
+.screenshot {
+    margin: 0 0 30px 0;
+}
+
+.icon {
+    width: 82px;
+    height: 82px;
+}
+
+.title {
+    font-size: 50px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    padding: 0;
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+.description {
     font-size: 22px;
     font-weight: 300;
     letter-spacing: 1px;
-    margin: 0;
     padding: 0;
 }
 
 .screenshot {
-    width: 250px;
-    margin: 30px;
+    width: 350px;
+    border-radius: 2px;
 }
 
 .download_button {
@@ -16,7 +39,6 @@
     border: none;
     border-radius: 2px;
     height: 36px;
-    margin: 0;
     min-width: 64px;
     padding: 0 16px;
     display: inline-block;
