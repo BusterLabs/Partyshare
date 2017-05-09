@@ -103,7 +103,7 @@ class IPFSBox extends EventEmitter {
         if (this._state &&
             this._state.files &&
             newState.files &&
-            newState.files.length > this._state.files.length) {
+            (newState.files.length - this._state.files.length) > 0) {
             this.emit('files-added');
         }
 
