@@ -34,6 +34,7 @@ mb.on('ready', () => {
         mb.showWindow();
     }, 1000);
 
+    mb.tray.setPressedImage(LIGHT_MENUBAR_ICON_PATH);
     if (__DEV__) {
         return;
     }
