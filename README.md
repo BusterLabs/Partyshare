@@ -2,11 +2,11 @@
 
 An open source file sharing app built on IPFS (InterPlanetary File System).
 
-<img width="375" alt="Partyshare screenshot" src="https://cloud.githubusercontent.com/assets/1383979/25337347/8fff202a-28c9-11e7-98a6-86bc4fc27481.png">
+![example](https://cloud.githubusercontent.com/assets/1383979/25846625/7be9b06a-3480-11e7-84fc-c34db587be22.gif)
 
 ## Try it
 
-Download the latest version at [busterlabs.github.io/Partyshare/](https://busterlabs.github.io/Partyshare/).
+Download the latest version at [busterlabs.github.io/Partyshare](https://busterlabs.github.io/Partyshare/).
 
 
 ##  Hack on it
