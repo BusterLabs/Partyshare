@@ -1,0 +1,18 @@
+{
+  "name": "partysha.re",
+  "version": "1.0.0",
+  "description": "Partyshare - Free, peer-to-peer file sharing using IPFS",
+  "main": "index.js",
+  "repository": "git@github.com:BusterLabs/Partyshare.git",
+  "author": "Ben Stahl <bhstahl@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "autoprefixer": "^7.0.1",
+    "cssnano": "^3.10.0",
+    "postcss-cli": "^4.0.0"
+  },
+  "scripts": {
+    "dev" : "postcss index.css --use autoprefixer cssnano -o index.min.css -w",
+    "prefix": "postcss index.css --use autoprefixer cssnano -o index.min.css"
+  }
+}

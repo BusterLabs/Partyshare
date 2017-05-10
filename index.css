@@ -1,11 +1,41 @@
+*, *:before, *:after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  box-sizing: border-box;
+  font-family: 'BlinkMacSystemFont', -apple-system, 'San Francisco', Helvetica, Arial, sans-serif;;
+  font-weight: 100;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(to bottom,#041727 0%,#062b3f 100%);
+  color: #fff;
+}
+
+a,
+a:visited {
+    color: #41F5C0;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+
 .icon,
 .title {
     margin: 0 0 15px 0;
-}
-
-.description,
-.screenshot {
-    margin: 0 0 30px 0;
 }
 
 .icon {
@@ -29,20 +59,23 @@
     padding: 0;
 }
 
-.screenshot {
-    width: 350px;
+.screenshot_container {
+    width: 300px;
+    height: 300px;
     border-radius: 2px;
+    overflow: hidden;
+}
+.screenshot {
+    width: 300px;
 }
 
-.download_button {
+.button {
     background: 0 0;
     border: none;
     border-radius: 2px;
-    height: 36px;
-    min-width: 64px;
-    padding: 0 16px;
+    padding: 8px 24px;
     display: inline-block;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0;
@@ -58,8 +91,32 @@
     background-color: #41F5C0;
 }
 
-
-.download_button:active {
+.button:active {
     box-shadow: 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12), 0 2px 4px -1px rgba(0,0,0,.2);
     background-color: rgba(158,158,158,.4);
 }
+
+.button--download {
+    margin: 40px 10px ;
+}
+
+footer {
+    font-size: .75rem;
+    display: flex;
+    font-weight: 600;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 10px 20px;
+}
+
+.footer--item {
+    margin-left: 20px;
+    opacity: 0.4;
+}
+
+a.footer--item:hover {
+    opacity: 1;
+    transition: opacity 80ms ease-out;
+}
+
