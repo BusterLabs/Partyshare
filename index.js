@@ -3,7 +3,7 @@ function handleResponse(res) {
     if (!asset) {
         return;
     }
-    var downloadButtonEl = document.querySelector('.download_button');
+    var downloadButtonEl = document.querySelector('.button--download');
     downloadButtonEl.setAttribute('download', true);
     downloadButtonEl.setAttribute('href', asset.browser_download_url);
 }
