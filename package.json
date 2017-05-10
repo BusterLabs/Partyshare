@@ -12,7 +12,6 @@
     "postcss-cli": "^4.0.0"
   },
   "scripts": {
-    "dev" : "postcss index.css --use autoprefixer cssnano -o index.min.css -w",
-    "prefix": "postcss index.css --use autoprefixer cssnano -o index.min.css"
+    "start" : "postcss index.css --use autoprefixer cssnano -o index.min.css -w"
   }
 }

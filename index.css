@@ -57,6 +57,8 @@ a:visited {
     font-weight: 300;
     letter-spacing: 1px;
     padding: 0;
+    max-width: 620px;
+    line-height: 30px;
 }
 
 .screenshot_container {
