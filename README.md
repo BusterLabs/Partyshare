@@ -2,7 +2,13 @@
 
 A free, open source file sharing app built on [IPFS](https://ipfs.io/), the peer-to-peer hypermedia protocol.
 
-![example](http://partysha.re/example.gif)
+
+<p align="center">
+  <br>
+  <img width="300" src="http://partysha.re/example.gif">
+  <br>
+</p>
+
 
 ## Try it
 
