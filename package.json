@@ -12,6 +12,8 @@
     "postcss-cli": "^4.0.0"
   },
   "scripts": {
-    "start" : "postcss index.css --use autoprefixer cssnano -o index.min.css -w"
+    "start": "yarn open && yarn postcss",
+    "open": "open index.html",
+    "postcss": "postcss index.css --use autoprefixer cssnano -o index.min.css -w"
   }
 }
