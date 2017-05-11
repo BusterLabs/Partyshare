@@ -2,7 +2,7 @@
 
 A free, open source file sharing app built on [IPFS](https://ipfs.io/), the peer-to-peer hypermedia protocol.
 
-![example](https://cloud.githubusercontent.com/assets/1383979/25846625/7be9b06a-3480-11e7-84fc-c34db587be22.gif)
+![example](http://partysha.re/example.gif)
 
 ## Try it
 
