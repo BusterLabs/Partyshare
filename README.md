@@ -1,7 +1,6 @@
 # Partyshare
 
-A free, open source file sharing app built on [IPFS](https://ipfs.io/), the peer-to-peer hypermedia protocol.
-
+A free, open source file sharing application, built on the peer-to-peer hypermedia protocol [IPFS](https://ipfs.io/).
 
 <p align="center">
   <br>
