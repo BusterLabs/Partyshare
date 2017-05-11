@@ -30,8 +30,9 @@ a:visited {
     align-items: center;
     justify-content: center;
     flex-grow: 1;
+    flex-shrink: 0;
+    padding: 20px 0;
 }
-
 
 .icon,
 .title {
@@ -126,3 +127,31 @@ a.footer--item:hover {
     transition: opacity 80ms ease-out;
 }
 
+@media only screen and (max-device-width: 480px) {
+    .icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .title {
+        font-size: 36px;
+    }
+
+    .description {
+        max-width: 300px;
+        font-size: 16px;
+    }
+
+    .screenshot_container {
+        width: 220px;
+        height: 220px;
+    }
+    .button {
+        padding: 4px 18px;
+        font-size: 14px;
+    }
+
+    .screenshot {
+        width: 220px;
+    }
+}
