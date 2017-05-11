@@ -1,3 +1,5 @@
+import mime from 'mime';
+
 /**
  * Format the GTM event with the appropriate variables
  *
@@ -5,7 +7,7 @@
  * @param  {String} options.action   [description]
  * @param  {String} options.label    [description]
  */
-const fireEvent = ({ category, action, label }) => {
+export const fireEvent = ({ category, action, label }) => {
     window.dataLayer.push({
         'event': 'ga.event',
         'ga.category': category,
@@ -14,7 +16,17 @@ const fireEvent = ({ category, action, label }) => {
     });
 };
 
-module.exports = {
-    fireEvent,
+/**
+ * Check the mime and match any images.
+ *
+ * @param {String} path
+ */
+export const isImage = (path) => {
+    const mimeType = mime.lookup(path);
+    if (!mimeType) {
+        return false;
+    }
+
+    return mimeType.match(/^image\/.*/) !== null;
 };
 
