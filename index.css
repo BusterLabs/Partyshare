@@ -12,7 +12,6 @@ body {
   text-align: center;
   display: flex;
   flex-direction: column;
-  height: 100%;
   width: 100%;
   background: linear-gradient(to bottom,#041727 0%,#062b3f 100%);
   color: #fff;
@@ -31,7 +30,7 @@ a:visited {
     justify-content: center;
     flex-grow: 1;
     flex-shrink: 0;
-    padding: 20px 0;
+    margin: 200px 0;
 }
 
 .icon,
@@ -62,14 +61,15 @@ a:visited {
     line-height: 30px;
 }
 
-.screenshot_container {
-    width: 300px;
-    height: 300px;
-    border-radius: 2px;
-    overflow: hidden;
-}
+.screenshot_container,
 .screenshot {
     width: 300px;
+    height: 400px;
+}
+
+.screenshot_container {
+    border-radius: 2px;
+    overflow: hidden;
 }
 
 .button {
@@ -104,7 +104,7 @@ a:visited {
 }
 
 .button--download {
-    margin: 40px 10px ;
+    margin: 80px 0;
 }
 
 footer {
@@ -127,7 +127,32 @@ a.footer--item:hover {
     transition: opacity 80ms ease-out;
 }
 
+.example {
+    display: flex;
+    flex-direction: row;
+}
+
+.example--text,
+.example--image {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 30px;
+}
+
+
+.example--text {
+    font-size: 30px;
+    line-height: 50px;
+    font-weight: 100;
+}
+
 @media only screen and (max-device-width: 480px) {
+
+    .content {
+        margin: 40px 0;
+    }
+
     .icon {
         width: 60px;
         height: 60px;
@@ -142,16 +167,32 @@ a.footer--item:hover {
         font-size: 16px;
     }
 
-    .screenshot_container {
+    .screenshot_container,
+    .screenshot {
         width: 220px;
-        height: 220px;
+        height: 293px;
     }
+
     .button {
         padding: 4px 18px;
         font-size: 14px;
     }
 
+    .button--download {
+        margin: 40px 0;
+    }
+
     .screenshot {
         width: 220px;
+    }
+
+    .example {
+        flex-direction: column;
+    }
+
+    .example--text{
+        font-size: 21px;
+        line-height: 35px;
+        margin-bottom: 30px;
     }
 }
