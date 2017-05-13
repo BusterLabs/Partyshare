@@ -27,7 +27,7 @@ class Application extends Component {
             connected: false,
             synced: false,
             daemon: null,
-            boxPath: null,
+            folder: null,
         };
 
         this.onIpcChange = this.onIpcChange.bind(this);
@@ -57,12 +57,12 @@ class Application extends Component {
     onDrop(e) {
         e.preventDefault();
         const {
-            boxPath,
+            folder,
         } = this.state;
 
         Array.from(e.dataTransfer.files).forEach((file) => {
             const fileName = basename(file.path);
-            const newPath = join(boxPath, fileName);
+            const newPath = join(folder, fileName);
             fs.copy(file.path, newPath, () => {});
         });
 
@@ -74,7 +74,7 @@ class Application extends Component {
 
     openFolder() {
         ipcRenderer.send(IPC_EVENT_HIDE_MENU);
-        shell.openItem(this.state.boxPath);
+        shell.openItem(this.state.folder);
         fireEvent({
             category: 'ui',
             action: 'open_folder',
@@ -83,7 +83,7 @@ class Application extends Component {
 
     render(props, state) {
         const {
-            boxPath,
+            folder,
             connected,
             files,
             notification,
@@ -114,7 +114,7 @@ class Application extends Component {
                     <div class="pane-group">
                         <div class="pane">
                             { notification ? <Notification>{notification}</Notification> : null }
-                            { connected ? <FileList files={files} synced={synced} boxPath={boxPath} /> : <Center>Connecting…</Center>}
+                            { connected ? <FileList files={files} synced={synced} folder={folder} /> : <Center>Connecting…</Center>}
                         </div>
                     </div>
                 </div>

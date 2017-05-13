@@ -3,7 +3,7 @@ const {
     dialog,
     ipcMain,
  } = require('electron');
-const IPFSBox = require('./IPFSBox.js');
+const IPFSSync = require('./classes/IPFSSync.js');
 const logger = require('electron-log');
 const menubar = require('menubar');
 const fs = require('fs-extra');
@@ -20,6 +20,7 @@ const {
 const {
     IPC_EVENT_REQUEST_STATE,
     IPC_EVENT_SEND_STATE,
+    IPC_EVENT_STATE_CHANGE,
     IPC_EVENT_FILES_ADDED,
     IPC_EVENT_NOTIFICATION,
     IPC_EVENT_HIDE_MENU,
@@ -29,7 +30,7 @@ const {
 autoUpdater.logger = logger;
 autoUpdater.logger.transports.file.level = 'info';
 
-const ipfsBox = new IPFSBox();
+const ipfsSync = new IPFSSync();
 
 const mb = menubar({
     icon: DARK_MENUBAR_ICON_PATH,
@@ -53,13 +54,13 @@ mb.on('ready', () => {
     // Copy files dragged to menu bar into partyshare
     mb.tray.on('drop-files', (event, files) => {
 
-        if (!ipfsBox.state.connected) {
+        if (!ipfsSync.state.connected) {
             return;
         }
 
         files.forEach((filePath) => {
             const fileName = basename(filePath);
-            const newPath = join(ipfsBox.state.boxPath, fileName);
+            const newPath = join(ipfsSync.state.folder, fileName);
             fs.copy(filePath, newPath);
         });
     });
@@ -73,7 +74,7 @@ mb.on('ready', () => {
 });
 
 mb.on('after-create-window', () => {
-    mb.window.webContents.send(IPC_EVENT_SEND_STATE, ipfsBox.state);
+    mb.window.webContents.send(IPC_EVENT_SEND_STATE, ipfsSync.state);
     mb.window.setMovable(false);
 
     if (__DEV__) {
@@ -83,20 +84,20 @@ mb.on('after-create-window', () => {
 });
 
 mb.on('show', () => {
-    mb.window.webContents.send(IPC_EVENT_SEND_STATE, ipfsBox.state);
+    mb.window.webContents.send(IPC_EVENT_SEND_STATE, ipfsSync.state);
 });
 
-ipfsBox.on('state-change', () => {
+ipfsSync.on(IPC_EVENT_STATE_CHANGE, () => {
     if (!mb.window) {
         logger.error('[ipcMain] No window to send event on');
         return;
     }
 
-    mb.window.webContents.send(IPC_EVENT_SEND_STATE, ipfsBox.state);
+    mb.window.webContents.send(IPC_EVENT_SEND_STATE, ipfsSync.state);
 });
 
-ipfsBox.on(IPC_EVENT_FILES_ADDED, () => {
-    logger.info('[ipfsBox] files-added');
+ipfsSync.on(IPC_EVENT_FILES_ADDED, () => {
+    logger.info('[ipfsSync] files-added');
     mb.showWindow();
     mb.window.webContents.send(IPC_EVENT_FILES_ADDED);
 });
@@ -106,7 +107,7 @@ ipfsBox.on(IPC_EVENT_FILES_ADDED, () => {
 // ___________________________________________________________________________
 
 ipcMain.on(IPC_EVENT_REQUEST_STATE, (event) => {
-    event.sender.send(IPC_EVENT_SEND_STATE, ipfsBox.state);
+    event.sender.send(IPC_EVENT_SEND_STATE, ipfsSync.state);
 });
 
 ipcMain.on(IPC_EVENT_HIDE_MENU, () => {
@@ -118,12 +119,12 @@ ipcMain.on(IPC_EVENT_QUIT_APP, () => {
 });
 
 ipcMain.on(IPC_EVENT_NOTIFICATION, (event, text) => {
-    const state = Object.assign(ipfsBox.state, {
+    const state = Object.assign(ipfsSync.state, {
         notification: text,
     });
     mb.window.webContents.send(IPC_EVENT_SEND_STATE, state);
     setTimeout(() => {
-        const clearedState = Object.assign(ipfsBox.state, {
+        const clearedState = Object.assign(ipfsSync.state, {
             notification: false,
         });
         mb.window.webContents.send(IPC_EVENT_SEND_STATE, clearedState);
