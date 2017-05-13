@@ -1,3 +1,8 @@
+.btn,
+.btn .icon {
+    cursor: pointer;
+}
+
 .toolbar-header .title {
   -webkit-app-region: drag;
 }
