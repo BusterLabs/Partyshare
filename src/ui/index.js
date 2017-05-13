@@ -9,6 +9,13 @@ import { ipcRenderer, shell } from 'electron';
 import fs from 'fs-extra';
 import filesize from 'file-size';
 import { fireEvent } from 'functions';
+const {
+    IPC_EVENT_REQUEST_STATE,
+    IPC_EVENT_SEND_STATE,
+    IPC_EVENT_FILES_ADDED,
+    IPC_EVENT_HIDE_MENU,
+    IPC_EVENT_QUIT_APP,
+} = require('../shared/constants');
 
 class Application extends Component {
 
@@ -29,18 +36,18 @@ class Application extends Component {
     }
 
     componentDidMount() {
-        ipcRenderer.on('send-state', this.onIpcChange);
-        ipcRenderer.on('files-added', (event) => {
+        ipcRenderer.on(IPC_EVENT_SEND_STATE, this.onIpcChange);
+        ipcRenderer.on(IPC_EVENT_FILES_ADDED, (event) => {
             fireEvent({
                 category: 'ipc',
                 action: 'files_added',
             });
         });
-        ipcRenderer.send('request-state');
+        ipcRenderer.send(IPC_EVENT_REQUEST_STATE);
     }
 
     componentWillUnmount() {
-        ipcRenderer.removeListener('send-state', this.onIpcChange);
+        ipcRenderer.removeListener(IPC_EVENT_SEND_STATE, this.onIpcChange);
     }
 
     onIpcChange(event, newState) {
@@ -66,7 +73,7 @@ class Application extends Component {
     }
 
     openFolder() {
-        ipcRenderer.send('hide');
+        ipcRenderer.send(IPC_EVENT_HIDE_MENU);
         shell.openItem(this.state.boxPath);
         fireEvent({
             category: 'ui',
@@ -92,7 +99,7 @@ class Application extends Component {
             >
                 <Header>
                     <Button icon="cancel-circled"
-                      onClick={() => ipcRenderer.send('quit')}
+                      onClick={() => ipcRenderer.send(IPC_EVENT_QUIT_APP)}
                     />
                     <Title>
                         {connected && synced && `Sharing ${files.length} files (${totalSize})`}

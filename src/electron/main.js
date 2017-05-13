@@ -17,6 +17,14 @@ const {
     DARK_MENUBAR_ICON_PATH,
     INDEX_PATH,
 } = require('./constants');
+const {
+    IPC_EVENT_REQUEST_STATE,
+    IPC_EVENT_SEND_STATE,
+    IPC_EVENT_FILES_ADDED,
+    IPC_EVENT_NOTIFICATION,
+    IPC_EVENT_HIDE_MENU,
+    IPC_EVENT_QUIT_APP,
+} = require('../shared/constants');
 
 autoUpdater.logger = logger;
 autoUpdater.logger.transports.file.level = 'info';
@@ -65,7 +73,7 @@ mb.on('ready', () => {
 });
 
 mb.on('after-create-window', () => {
-    mb.window.webContents.send('send-state', ipfsBox.state);
+    mb.window.webContents.send(IPC_EVENT_SEND_STATE, ipfsBox.state);
     mb.window.setMovable(false);
 
     if (__DEV__) {
@@ -75,7 +83,7 @@ mb.on('after-create-window', () => {
 });
 
 mb.on('show', () => {
-    mb.window.webContents.send('send-state', ipfsBox.state);
+    mb.window.webContents.send(IPC_EVENT_SEND_STATE, ipfsBox.state);
 });
 
 ipfsBox.on('state-change', () => {
@@ -84,41 +92,41 @@ ipfsBox.on('state-change', () => {
         return;
     }
 
-    mb.window.webContents.send('send-state', ipfsBox.state);
+    mb.window.webContents.send(IPC_EVENT_SEND_STATE, ipfsBox.state);
 });
 
-ipfsBox.on('files-added', () => {
+ipfsBox.on(IPC_EVENT_FILES_ADDED, () => {
     logger.info('[ipfsBox] files-added');
     mb.showWindow();
-    mb.window.webContents.send('files-added');
+    mb.window.webContents.send(IPC_EVENT_FILES_ADDED);
 });
 
 
 // Inter Process (Main <-> Render) Communication
 // ___________________________________________________________________________
 
-ipcMain.on('request-state', (event) => {
-    event.sender.send('send-state', ipfsBox.state);
+ipcMain.on(IPC_EVENT_REQUEST_STATE, (event) => {
+    event.sender.send(IPC_EVENT_SEND_STATE, ipfsBox.state);
 });
 
-ipcMain.on('hide', () => {
+ipcMain.on(IPC_EVENT_HIDE_MENU, () => {
     mb.hideWindow();
 });
 
-ipcMain.on('quit', () => {
+ipcMain.on(IPC_EVENT_QUIT_APP, () => {
     mb.app.quit();
 });
 
-ipcMain.on('notification', (event, text) => {
+ipcMain.on(IPC_EVENT_NOTIFICATION, (event, text) => {
     const state = Object.assign(ipfsBox.state, {
         notification: text,
     });
-    mb.window.webContents.send('send-state', state);
+    mb.window.webContents.send(IPC_EVENT_SEND_STATE, state);
     setTimeout(() => {
         const clearedState = Object.assign(ipfsBox.state, {
             notification: false,
         });
-        mb.window.webContents.send('send-state', clearedState);
+        mb.window.webContents.send(IPC_EVENT_SEND_STATE, clearedState);
     }, 3000);
 });
 

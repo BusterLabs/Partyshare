@@ -2,6 +2,10 @@ import { h } from 'preact';
 import { shell, clipboard, ipcRenderer } from 'electron';
 import { basename, extname } from 'path';
 import { fireEvent, isImage } from 'functions';
+import {
+    IPC_EVENT_NOTIFICATION,
+    IPC_EVENT_HIDE_MENU,
+} from '../../shared/constants';
 
 
 const FileListItem = ({ file, url }) => (
@@ -21,7 +25,7 @@ const FileListItem = ({ file, url }) => (
               className="file_list_item--button"
               onClick={() => {
                   clipboard.writeText(url, 'selection');
-                  ipcRenderer.send('notification', 'Link copied!');
+                  ipcRenderer.send(IPC_EVENT_NOTIFICATION, 'Link copied!');
                   fireEvent({
                       category: 'ui',
                       action: 'copy_link',
@@ -34,7 +38,7 @@ const FileListItem = ({ file, url }) => (
               className="file_list_item--button"
               onClick={() => {
                   shell.openExternal(url);
-                  ipcRenderer.send('hide');
+                  ipcRenderer.send(IPC_EVENT_HIDE_MENU);
                   fireEvent({
                       category: 'ui',
                       action: 'open_link',

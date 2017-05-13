@@ -4,6 +4,9 @@ import Center from 'components/Center';
 import { GATEWAY_URL } from '../../electron/constants';
 import { Button } from 'preact-photon';
 import { shell, ipcRenderer } from 'electron';
+import {
+    IPC_EVENT_HIDE_MENU,
+} from '../../shared/constants';
 
 const FileList = ({ files, synced, boxPath }) => {
     if (files.length < 1 && !synced) {
@@ -19,7 +22,7 @@ const FileList = ({ files, synced, boxPath }) => {
                 <Button
                   onClick={() => {
                       shell.openItem(boxPath);
-                      ipcRenderer.send('hide');
+                      ipcRenderer.send(IPC_EVENT_HIDE_MENU);
                   }}
                 >
                     Reveal Folder

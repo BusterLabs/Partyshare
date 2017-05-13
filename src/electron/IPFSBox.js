@@ -5,6 +5,9 @@ const EventEmitter = require('events');
 const fs = require('fs');
 const fse = require('fs-extra');
 const logger = require('electron-log');
+const {
+    IPC_EVENT_FILES_ADDED,
+} = require('../shared/constants');
 
 const DEFAULTS = {
     boxPath: IPFS_FOLDER,
@@ -104,7 +107,7 @@ class IPFSBox extends EventEmitter {
             this._state.files &&
             newState.files &&
             (newState.files.length - this._state.files.length) > 0) {
-            this.emit('files-added');
+            this.emit(IPC_EVENT_FILES_ADDED);
         }
 
         this._state = Object.assign({}, this._state, newState);
