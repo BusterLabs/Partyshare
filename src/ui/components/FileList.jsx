@@ -4,8 +4,11 @@ import Center from 'components/Center';
 import { GATEWAY_URL } from '../../electron/constants';
 import { Button } from 'preact-photon';
 import { shell, ipcRenderer } from 'electron';
+import {
+    IPC_EVENT_HIDE_MENU,
+} from '../../shared/constants';
 
-const FileList = ({ files, synced, boxPath }) => {
+const FileList = ({ files, synced, folder }) => {
     if (files.length < 1 && !synced) {
         return (
             <Center>Syncing…</Center>
@@ -18,8 +21,8 @@ const FileList = ({ files, synced, boxPath }) => {
                 <p>Drag a file into your Partyshare folder to begin</p>
                 <Button
                   onClick={() => {
-                      shell.openItem(boxPath);
-                      ipcRenderer.send('hide');
+                      shell.openItem(folder);
+                      ipcRenderer.send(IPC_EVENT_HIDE_MENU);
                   }}
                 >
                     Reveal Folder
