@@ -23,9 +23,11 @@ const FileListItem = ({ file, url }) => (
         { file.hash && [
             <div
               className="file_list_item--button"
+              title="Copy the share link to your clipboard"
+              role="button"
               onClick={() => {
                   clipboard.writeText(url, 'selection');
-                  ipcRenderer.send(IPC_EVENT_NOTIFICATION, 'Link copied!');
+                  ipcRenderer.send(IPC_EVENT_NOTIFICATION, 'Share link copied to your clipboard');
                   fireEvent({
                       category: 'ui',
                       action: 'copy_link',
@@ -36,6 +38,8 @@ const FileListItem = ({ file, url }) => (
             </div>,
             <div
               className="file_list_item--button"
+              title="Open the share link in your browser"
+              role="button"
               onClick={() => {
                   shell.openExternal(url);
                   ipcRenderer.send(IPC_EVENT_HIDE_MENU);
