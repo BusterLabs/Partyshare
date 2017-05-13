@@ -62,7 +62,7 @@
 }
 
 .file_list_item--icon {
-    color: #CCCBCD;
+    color: #D1CFD1;
 }
 
 .file_list_item--icon,
@@ -87,7 +87,7 @@
 
 .file_list_item--button {
     padding: 10px 15px;
-    color: #CCCBCD;
+    color: #D1CFD1;
     transition: color 100ms ease;
 }
 
@@ -95,13 +95,12 @@
     padding-right: 0;
 }
 
-.file_list_item--button:hover {
+.file_list_item--button:hover .icon {
     cursor: pointer;
 }
 
-.file_list_item--button:hover .icon {
+.file_list_item--button:hover {
     color: #4A4A4A;
-    cursor: pointer;
 }
 
 @keyframes fadeIn {
