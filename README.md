@@ -7,14 +7,14 @@ It's kind of like Dropbox, but free, unlimited, and instantaneous.
 
 <p align="center">
   <br>
-  <img width="300" src="http://partysha.re/example.gif?cache=1">
+  <img width="300" src="https://partysha.re//example.gif">
   <br>
 </p>
 
 
 ## Try it
 
-Download the latest version at [partysha.re](http://partysha.re).
+Download the latest version at [partysha.re](https://partysha.re).
 
 
 ##  Hack on it
