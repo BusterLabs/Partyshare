@@ -190,9 +190,17 @@ a.footer--item:hover {
         flex-direction: column;
     }
 
-    .example--text{
+    .example--text {
         font-size: 21px;
         line-height: 35px;
         margin-bottom: 30px;
+    }
+
+    .example--image {
+        align-self: center;
+    }
+
+    .footer--item {
+        font-size: 0.65rem;
     }
 }
