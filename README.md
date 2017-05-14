@@ -1,4 +1,4 @@
-# [Partysha.re](http://partysha.re) website
+# [Partysha.re](https://partysha.re) website
 
 A free, open source file sharing app built on [IPFS](https://ipfs.io/), the peer-to-peer hypermedia protocol.
 
