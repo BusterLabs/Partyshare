@@ -8,7 +8,6 @@ import { basename, join } from 'path';
 import { ipcRenderer, shell } from 'electron';
 import fs from 'fs-extra';
 import filesize from 'file-size';
-import { fireEvent } from 'functions';
 const {
     IPC_EVENT_REQUEST_STATE,
     IPC_EVENT_SEND_STATE,
@@ -37,12 +36,6 @@ class Application extends Component {
 
     componentDidMount() {
         ipcRenderer.on(IPC_EVENT_SEND_STATE, this.onIpcChange);
-        ipcRenderer.on(IPC_EVENT_FILES_ADDED, (event) => {
-            fireEvent({
-                category: 'ipc',
-                action: 'files_added',
-            });
-        });
         ipcRenderer.send(IPC_EVENT_REQUEST_STATE);
     }
 
@@ -65,20 +58,11 @@ class Application extends Component {
             const newPath = join(folder, fileName);
             fs.copy(file.path, newPath, () => {});
         });
-
-        fireEvent({
-            category: 'ui',
-            action: 'drop_files',
-        });
     }
 
     openFolder() {
         ipcRenderer.send(IPC_EVENT_HIDE_MENU);
         shell.openItem(this.state.folder);
-        fireEvent({
-            category: 'ui',
-            action: 'open_folder',
-        });
     }
 
     render(props, state) {
