@@ -2,12 +2,13 @@
 
 A free, open source file sharing application, built on the peer-to-peer hypermedia protocol [IPFS](https://ipfs.io/).
 
-It's a simple, free way for sharing files via IPFS.
 
-
+<h3 align="center">
+<br>
+It's a simple way for sharing files via IPFS.
+</h3>
 <p align="center">
-  <br>
-  <img width="300" src="https://partysha.re//example.gif">
+  <img width="250" src="https://partysha.re//example.gif">
   <br>
 </p>
 
