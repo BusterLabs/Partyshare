@@ -2,7 +2,7 @@
 
 A free, open source file sharing application, built on the peer-to-peer hypermedia protocol [IPFS](https://ipfs.io/).
 
-It's kind of like Dropbox, but free, unlimited, and instantaneous.
+It's a simple, free way for sharing files via IPFS.
 
 
 <p align="center">
