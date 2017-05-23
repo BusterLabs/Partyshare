@@ -4,7 +4,7 @@ A free, open source file sharing application, built on the peer-to-peer hypermed
 
 <h4 align="center">
 <br>
-It's a simple way for sharing files via IPFS.
+It's a simple way to share files via IPFS.
 </h4>
 <p align="center">
   <img width="250" src="https://partysha.re//example.gif">
