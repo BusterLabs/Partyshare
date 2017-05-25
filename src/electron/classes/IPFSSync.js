@@ -2,15 +2,18 @@ const EventEmitter = require('events');
 const fs = require('fs');
 const fse = require('fs-extra');
 const logger = require('electron-log');
+const ipfsCtl = require('ipfsd-ctl');
+const ipfsAPI = require('ipfs-api');
 const {
     getFiles,
-    startIPFS } = require('../functions.js');
+} = require('../functions.js');
 const {
     relative,
     join,
  } = require('path');
 const {
     IPFS_FOLDER,
+    IPFS_REPO,
  } = require('../constants.js');
 const {
     IPC_EVENT_FILES_ADDED,
@@ -60,6 +63,10 @@ class IPFSSync extends EventEmitter {
         this._addFilesToIPFS = this._addFilesToIPFS.bind(this);
         this._mapFileData = this._mapFileData.bind(this);
         this._readAndSyncFiles = this._readAndSyncFiles.bind(this);
+        this._getNode = this._getNode.bind(this);
+        this._initNode = this._initNode.bind(this);
+        this._getConfig = this._getConfig.bind(this);
+        this._startDaemon = this._startDaemon.bind(this);
         this.setState = this.setState.bind(this);
         this.start = this.start.bind(this);
         this.watch = this.watch.bind(this);
@@ -121,6 +128,105 @@ class IPFSSync extends EventEmitter {
             .catch((e) => logger.error('[IPFSSync] _readAndSyncFiles: ', e));
     }
 
+    /**
+    * Get a local node.
+    */
+    _getNode() {
+        return new Promise((resolve, reject) => {
+            ipfsCtl.local(IPFS_REPO, {}, (err, node) => {
+                if (err) {
+                    logger.error('[IPFSSync] _getNode', err);
+                    reject(err);
+                    return;
+                }
+
+                resolve(node);
+            });
+        });
+    }
+
+    /**
+    * Initialize the ipfs node if it isn't already.
+    * @param {Node} node
+    */
+    _initNode(node) {
+        return new Promise((resolve, reject) => {
+            if (node.initialized) {
+                resolve(node);
+                return;
+            }
+
+            node.init({ directory: IPFS_REPO }, (err, res) => {
+                if (err) {
+                    logger.error('[IPFSSync] _initNode', err);
+                    return reject(err);
+                }
+
+                return resolve(node);
+            });
+        });
+    }
+
+    /**
+    * Attempt to read an existing ipfs config
+    * @param {Node} node
+    */
+    _getConfig(node) {
+        return new Promise((resolve, reject) => {
+            node.getConfig('show', (err, configString) => {
+                if (err) {
+                    logger.error('[IPFSSync] _getConfig', err);
+                    return reject(err);
+                }
+
+                try {
+                    const config = JSON.parse(configString);
+                    return resolve(config);
+                }
+                catch (e) {
+                    return reject(e);
+                }
+            });
+        });
+    }
+
+    /**
+    * Attempt to connet to a running daemon.
+    * @param {Node} node
+    */
+    _connectToExistingDaemon(node) {
+        return new Promise((resolve, reject) => {
+            this._getConfig(node)
+                .then((config) => {
+                    const api = ipfsAPI(config.Addresses.API);
+                    return resolve(api);
+                })
+                .catch(reject);
+        });
+    }
+
+    /**
+     * Attempt to start a daemon, connecting to a possible running daemon
+     * if we fail.
+     * @param {Node} node
+     */
+    _startDaemon(node) {
+        return new Promise((resolve, reject) => {
+            node.startDaemon((err, daemon) => {
+                if (err) {
+                    logger.error('[IPFSSync] startIPFSDaemon', err);
+
+                    // Connect to an exising daemon if possible
+                    return this._connectToExistingDaemon(node)
+                        .then(resolve)
+                        .catch(reject);
+                }
+
+                return resolve(daemon);
+            });
+        });
+    }
+
     // Public API ____________________________________________________________
     get state() {
         logger.info('[IPFSSync] get state');
@@ -153,10 +259,12 @@ class IPFSSync extends EventEmitter {
         logger.info('[IPFSSync] start');
         this.watch();
 
-        return startIPFS()
-            .then((daemon) => this.setState({ daemon, connected: true }))
-            .then(() => this._readAndSyncFiles())
-            .catch((e) => logger.error('[IPFSSync] startIPFS: ', e));
+        return this._getNode()
+                .then(this._initNode)
+                .then(this._startDaemon)
+                .then((daemon) => this.setState({ daemon, connected: true }))
+                .then(() => this._readAndSyncFiles())
+                .catch((e) => logger.error('[IPFSSync] startIPFS: ', e));
     }
 
     /**
