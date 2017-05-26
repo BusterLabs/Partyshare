@@ -24,6 +24,8 @@ const DEFAULTS = {
     autoStart: true,
 };
 
+const MAX_DAEMON_RECONNECTS = 5;
+
 /**
 * Keep a folder in sync with your IPFS repo. Any files added
 * to the folder will be automatically added to IPFS.
@@ -46,6 +48,7 @@ class IPFSSync extends EventEmitter {
                 basename: basename(folderPath),
             },
             daemon: null,
+            daemonRetries: 0,
             connected: false,
             synced: false,
         };
@@ -64,10 +67,11 @@ class IPFSSync extends EventEmitter {
     _bindMethods() {
         logger.info('[IPFSSync] _bindMethods');
         this._addFilesToIPFS = this._addFilesToIPFS.bind(this);
-        this._readAndSyncFiles = this._readAndSyncFiles.bind(this);
+        this._getConfig = this._getConfig.bind(this);
         this._getNode = this._getNode.bind(this);
         this._initNode = this._initNode.bind(this);
-        this._getConfig = this._getConfig.bind(this);
+        this._readAndSyncFiles = this._readAndSyncFiles.bind(this);
+        this._retryDaemonConnection = this._retryDaemonConnection.bind(this);
         this._startDaemon = this._startDaemon.bind(this);
         this.setState = this.setState.bind(this);
         this.start = this.start.bind(this);
@@ -111,6 +115,28 @@ class IPFSSync extends EventEmitter {
     }
 
     /**
+     * Retry connecting to the daemon.
+     * @return {Promise}
+     */
+    _retryDaemonConnection() {
+        logger.info('[IPFSSync] _retryDaemonConnection');
+
+        if (this.state.daemonRetries > MAX_DAEMON_RECONNECTS) {
+            logger.error('[IPFSSync] _retryDaemonConnection: Exceeded max connection retries', this.state.daemonRetries)
+            return;
+        }
+
+        this.setState({
+            daemonRetries: this.state.daemonRetries + 1,
+            synced: false,
+        });
+
+        this.start()
+            .then(() => this.setState({ daemonRetries: 0 }))
+            .catch((e) => logger.error('[IPFSSync] _retryDaemonConnection: ', e));
+    }
+
+    /**
     * Get the contents of a folder, and add them to the IPFS repo.
     * @return {Promise}
     */
@@ -122,7 +148,10 @@ class IPFSSync extends EventEmitter {
         return getFiles(this.state.folder.path)
             .then(this._addFilesToIPFS)
             .then(({ files, folder }) => this.setState({ files, folder, synced: true }))
-            .catch((e) => logger.error('[IPFSSync] _readAndSyncFiles: ', e));
+            .catch((e) => {
+                logger.error('[IPFSSync] _readAndSyncFiles: ', e);
+                this._retryDaemonConnection();
+            });
     }
 
     /**
