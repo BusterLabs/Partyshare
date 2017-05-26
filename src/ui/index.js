@@ -83,16 +83,16 @@ class Application extends Component {
             >
                 <Header>
                     <Button icon="cancel-circled"
-                        title="Quit Partyshare"
-                        onClick={() => ipcRenderer.send(IPC_EVENT_QUIT_APP)}
+                      title="Quit Partyshare"
+                      onClick={() => ipcRenderer.send(IPC_EVENT_QUIT_APP)}
                     />
                     <Title>
                         {connected && synced && `Sharing ${files.length} files (${totalSize})`}
                         {connected && !synced && 'Syncing…'}
                     </Title>
                     <Button icon="folder"
-                        title="Open folder"
-                        onClick={this.openFolder}
+                      title="Open folder"
+                      onClick={this.openFolder}
                     />
                 </Header>
 
