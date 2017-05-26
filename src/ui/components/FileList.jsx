@@ -8,6 +8,7 @@ import {
     IPC_EVENT_HIDE_MENU,
 } from '../../shared/constants';
 import {
+    basename,
     relative,
 } from 'path';
 
@@ -39,7 +40,7 @@ const FileList = ({ files, synced, folder }) => {
     return (
         <ul className="file_list">
             {files.map((file) => <FileListItem
-              name={relative(folder.path, file.path)}
+              name={basename(file.path)}
               path={file.path}
               url={`${GATEWAY_URL}/${folder.hash}/${relative(folder.path, file.path)}`} />
             )}
