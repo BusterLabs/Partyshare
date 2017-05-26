@@ -3,6 +3,7 @@ import { h, Component, render } from 'preact';
 import { Header, Title, Button } from 'preact-photon';
 import FileList from 'components/FileList';
 import Center from 'components/Center';
+import Footer from 'components/Footer';
 import Notification from 'components/Notification';
 import { basename, join } from 'path';
 import { ipcRenderer, shell } from 'electron';
@@ -101,6 +102,7 @@ class Application extends Component {
                         <div class="pane">
                             { notification ? <Notification>{notification}</Notification> : null }
                             { connected ? <FileList files={files} synced={synced} folder={folder} /> : <Center>Connecting…</Center>}
+                            { files && files.length < 1 && <Footer>* Heads up, files added to IPFS can't be deleted later</Footer>}
                         </div>
                     </div>
                 </div>
