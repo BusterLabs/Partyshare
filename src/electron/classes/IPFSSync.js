@@ -8,8 +8,7 @@ const {
     getFiles,
 } = require('../functions.js');
 const {
-    relative,
-    join,
+    basename,
  } = require('path');
 const {
     IPFS_FOLDER,
@@ -21,7 +20,7 @@ const {
 } = require('../../shared/constants');
 
 const DEFAULTS = {
-    folder: IPFS_FOLDER,
+    folderPath: IPFS_FOLDER,
     autoStart: true,
 };
 
@@ -35,17 +34,20 @@ class IPFSSync extends EventEmitter {
         super();
 
         const {
-            folder,
+            folderPath,
             autoStart,
         } = Object.assign(DEFAULTS, options);
 
         this._bindMethods();
         this._state = {
             files: [],
+            folder: {
+                path: folderPath,
+                basename: basename(folderPath),
+            },
+            daemon: null,
             connected: false,
             synced: false,
-            daemon: null,
-            folder,
         };
 
         if (autoStart) {
@@ -57,11 +59,11 @@ class IPFSSync extends EventEmitter {
 
     /**
      * Bind any methods used in this class.
+     * @return {IPFSSync}
      */
     _bindMethods() {
         logger.info('[IPFSSync] _bindMethods');
         this._addFilesToIPFS = this._addFilesToIPFS.bind(this);
-        this._mapFileData = this._mapFileData.bind(this);
         this._readAndSyncFiles = this._readAndSyncFiles.bind(this);
         this._getNode = this._getNode.bind(this);
         this._initNode = this._initNode.bind(this);
@@ -75,62 +77,57 @@ class IPFSSync extends EventEmitter {
     }
 
     /**
-     * Iterate through an array of files, adding each to IPFS.
+     * Add the whole folder to IPFS, resolving with the new folder
+     * hash and a list of files.
      * @param  {Array} files
+     * @return {Promise}
      */
     _addFilesToIPFS(files) {
         logger.info('[IPFSSync] _addFilesToIPFS');
-        files = files.map((file) => {
-            return {
-                path: relative(this.state.folder, file.path),
-                content: fs.createReadStream(file.path),
+
+        return new Promise((resolve, reject) => {
+            const options = {
+                recursive: true,
             };
-        });
-        return this.state.daemon.files.add(files);
-    }
+            this.state.daemon.util.addFromFs(this.state.folder.path, options, (err, result) => {
+                if (err) {
+                    logger.error('[IPFSSync] _addFilesToIPFS', err);
+                    return reject(err);
+                }
 
-    /**
-     * Stat each file in an array and return the array.
-     * @param  {Array} files
-     */
-    _mapFileData(files) {
-        logger.info('[IPFSSync] _mapFileData');
+                const folder = result.find((file) => file.path === this.state.folder.basename);
 
-        const promises = files.map((file) => {
-            return new Promise((resolve, reject) => {
-                fs.stat(join(this.state.folder, file.path), (err, stats) => {
-                    if (err) {
-                        return reject(err);
-                    }
+                // the IPFS api returns a relative path,
+                // don't let it overwrite the full path
 
-                    resolve(Object.assign(file, {
-                        path: join(this.state.folder, file.path),
-                        relativePath: file.path,
-                        stats,
-                    }));
+                delete folder.path;
+
+                return resolve({
+                    files,
+                    folder: Object.assign({}, this.state.folder, folder),
                 });
             });
         });
-
-        return Promise.all(promises);
     }
 
     /**
     * Get the contents of a folder, and add them to the IPFS repo.
+    * @return {Promise}
     */
     _readAndSyncFiles() {
         logger.info('[IPFSSync] _readAndSyncFiles');
         this.setState({ synced: false });
 
-        getFiles(this.state.folder)
+
+        return getFiles(this.state.folder.path)
             .then(this._addFilesToIPFS)
-            .then(this._mapFileData)
-            .then((files) => this.setState({ files, synced: true }))
+            .then(({ files, folder }) => this.setState({ files, folder, synced: true }))
             .catch((e) => logger.error('[IPFSSync] _readAndSyncFiles: ', e));
     }
 
     /**
     * Get a local node.
+    * @return {Promise}
     */
     _getNode() {
         return new Promise((resolve, reject) => {
@@ -149,6 +146,7 @@ class IPFSSync extends EventEmitter {
     /**
     * Initialize the ipfs node if it isn't already.
     * @param {Node} node
+    * @return {Promise}
     */
     _initNode(node) {
         return new Promise((resolve, reject) => {
@@ -171,6 +169,7 @@ class IPFSSync extends EventEmitter {
     /**
     * Attempt to read an existing ipfs config
     * @param {Node} node
+    * @return {Promise}
     */
     _getConfig(node) {
         return new Promise((resolve, reject) => {
@@ -194,6 +193,7 @@ class IPFSSync extends EventEmitter {
     /**
     * Attempt to connet to a running daemon.
     * @param {Node} node
+    * @return {Promise}
     */
     _connectToExistingDaemon(node) {
         return new Promise((resolve, reject) => {
@@ -210,6 +210,7 @@ class IPFSSync extends EventEmitter {
      * Attempt to start a daemon, connecting to a possible running daemon
      * if we fail.
      * @param {Node} node
+     * @return {Promise}
      */
     _startDaemon(node) {
         return new Promise((resolve, reject) => {
@@ -250,6 +251,7 @@ class IPFSSync extends EventEmitter {
     /**
     * Update the current state of the sync and dispatch an event.
     * @param  {Object} newState
+    * @return {Promise}
     */
     setState(newState) {
         logger.info('[IPFSSync] setState', newState);
@@ -268,6 +270,7 @@ class IPFSSync extends EventEmitter {
 
     /**
      * Start the sync
+     * @return {Promise}
      */
     start() {
         logger.info('[IPFSSync] start');
@@ -301,12 +304,12 @@ class IPFSSync extends EventEmitter {
      */
     watch() {
         logger.info('[IPFSSync] watch');
-        fse.ensureDir(this.state.folder, (err) => {
+        fse.ensureDir(this.state.folder.path, (err) => {
             if (err) {
                 logger.error('[IPFSSync] watch', err);
                 return;
             }
-            fs.watch(this.state.folder, this._readAndSyncFiles);
+            fs.watch(this.state.folder.path, this._readAndSyncFiles);
         });
     }
 }

@@ -12,7 +12,6 @@ import filesize from 'file-size';
 const {
     IPC_EVENT_REQUEST_STATE,
     IPC_EVENT_SEND_STATE,
-    IPC_EVENT_FILES_ADDED,
     IPC_EVENT_HIDE_MENU,
     IPC_EVENT_QUIT_APP,
 } = require('../shared/constants');
@@ -63,7 +62,7 @@ class Application extends Component {
 
     openFolder() {
         ipcRenderer.send(IPC_EVENT_HIDE_MENU);
-        shell.openItem(this.state.folder);
+        shell.openItem(this.state.folder.path);
     }
 
     render(props, state) {

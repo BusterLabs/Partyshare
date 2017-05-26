@@ -1,6 +1,5 @@
 import { h } from 'preact';
 import { shell, clipboard, ipcRenderer } from 'electron';
-import { basename, extname } from 'path';
 import { isImage } from 'functions';
 import {
     IPC_EVENT_NOTIFICATION,
@@ -8,19 +7,19 @@ import {
 } from '../../shared/constants';
 
 
-const FileListItem = ({ file, url }) => (
+const FileListItem = ({ name, path, url }) => (
     <li className="file_list_item">
         <span className="file_list_item--icon">
-            { isImage(file.path) ?
-                <img className="file_list_item--image" src={file.path} />
+            { isImage(path) ?
+                <img className="file_list_item--image" src={path} />
             :
                 <span className="icon icon-doc-text" />
             }
         </span>
         <p className="file_list_item--name">
-            { `${basename(file.relativePath, extname(file.relativePath))}${extname(file.relativePath).toLowerCase()}` }
+            { name }
         </p>
-        { file.hash && [
+        { url && [
             <div
               className="file_list_item--button"
               title="Copy the share link to your clipboard"

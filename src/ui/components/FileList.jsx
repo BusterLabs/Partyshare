@@ -7,6 +7,9 @@ import { shell, ipcRenderer } from 'electron';
 import {
     IPC_EVENT_HIDE_MENU,
 } from '../../shared/constants';
+import {
+    relative,
+} from 'path';
 
 const FileList = ({ files, synced, folder }) => {
     if (files.length < 1 && !synced) {
@@ -35,7 +38,11 @@ const FileList = ({ files, synced, folder }) => {
 
     return (
         <ul className="file_list">
-            {files.map((file) => <FileListItem file={file} url={`${GATEWAY_URL}/${file.hash}`} />)}
+            {files.map((file) => <FileListItem
+              name={relative(folder.path, file.path)}
+              path={file.path}
+              url={`${GATEWAY_URL}/${folder.hash}/${relative(folder.path, file.path)}`} />
+            )}
         </ul>
     );
 };
