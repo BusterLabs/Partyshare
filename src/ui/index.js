@@ -101,7 +101,7 @@ class Application extends Component {
                         <div class="pane">
                             { notification ? <Notification>{notification}</Notification> : null }
                             { connected ? <FileList files={files} synced={synced} folder={folder} /> : <Center>Connecting…</Center>}
-                            { files && files.length < 1 && <Footer>* Heads up, files added to IPFS can't be deleted later</Footer>}
+                            { files && files.length < 1 && <Footer>* Heads up, files added to IPFS can‘t be deleted</Footer>}
                         </div>
                     </div>
                 </div>
