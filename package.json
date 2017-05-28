@@ -1,16 +1,17 @@
 {
   "name": "partyshare.busterlabs.xyz",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "A file sharing app using IPFS (InterPlanetary File System)",
   "main": "src/electron/main.js",
   "scripts": {
-    "build": "yarn fix_asar && webpack",
-    "electron": "ENV=dev electron src/electron/main.js",
+    "build_electron": "yarn fix_asar && build",
+    "build_ui": "webpack",
     "fix_asar": "sed -i '' 's|run(cmd, args|run(cmd.replace(\"app.asar\", \"app.asar.unpacked\"), args|' node_modules/ipfsd-ctl/src/exec.js",
     "lint": "eslint --ext .js --ext .jsx --format=node_modules/eslint-formatter-pretty src/",
-    "preversion": "yarn build",
-    "release": "yarn build && build",
-    "start": "yarn watch & yarn electron",
+    "preversion": "yarn build_ui",
+    "release": "yarn build_ui && build_electron",
+    "run_electron": "ENV=dev electron src/electron/main.js",
+    "start": "yarn watch & yarn run_electron",
     "watch": "webpack --progress --colors --watch"
   },
   "repository": "https://github.com/busterlabs/partyshare",
@@ -77,7 +78,7 @@
         }
       ],
       "category": "public.app-category.productivity",
-      "icon":"icons"
+      "icon": "icons"
     },
     "publish": [
       {

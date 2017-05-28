@@ -3,6 +3,7 @@ import { h, Component, render } from 'preact';
 import { Header, Title, Button } from 'preact-photon';
 import FileList from 'components/FileList';
 import Center from 'components/Center';
+import Footer from 'components/Footer';
 import Notification from 'components/Notification';
 import { basename, join } from 'path';
 import { ipcRenderer, shell } from 'electron';
@@ -11,7 +12,6 @@ import filesize from 'file-size';
 const {
     IPC_EVENT_REQUEST_STATE,
     IPC_EVENT_SEND_STATE,
-    IPC_EVENT_FILES_ADDED,
     IPC_EVENT_HIDE_MENU,
     IPC_EVENT_QUIT_APP,
 } = require('../shared/constants');
@@ -62,7 +62,7 @@ class Application extends Component {
 
     openFolder() {
         ipcRenderer.send(IPC_EVENT_HIDE_MENU);
-        shell.openItem(this.state.folder);
+        shell.openItem(this.state.folder.path);
     }
 
     render(props, state) {
@@ -83,16 +83,16 @@ class Application extends Component {
             >
                 <Header>
                     <Button icon="cancel-circled"
-                        title="Quit Partyshare"
-                        onClick={() => ipcRenderer.send(IPC_EVENT_QUIT_APP)}
+                      title="Quit Partyshare"
+                      onClick={() => ipcRenderer.send(IPC_EVENT_QUIT_APP)}
                     />
                     <Title>
                         {connected && synced && `Sharing ${files.length} files (${totalSize})`}
                         {connected && !synced && 'Syncing…'}
                     </Title>
                     <Button icon="folder"
-                        title="Open folder"
-                        onClick={this.openFolder}
+                      title="Open folder"
+                      onClick={this.openFolder}
                     />
                 </Header>
 
@@ -101,6 +101,7 @@ class Application extends Component {
                         <div class="pane">
                             { notification ? <Notification>{notification}</Notification> : null }
                             { connected ? <FileList files={files} synced={synced} folder={folder} /> : <Center>Connecting…</Center>}
+                            { files && files.length < 1 && <Footer>* Heads up, files added to IPFS can‘t be deleted</Footer>}
                         </div>
                     </div>
                 </div>
