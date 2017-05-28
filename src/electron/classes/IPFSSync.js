@@ -90,6 +90,15 @@ class IPFSSync extends EventEmitter {
         logger.info('[IPFSSync] _addFilesToIPFS');
 
         return new Promise((resolve, reject) => {
+
+            if (files.length < 1) {
+                resolve({
+                    files,
+                    folder: this.state.folder,
+                });
+                return;
+            }
+
             const options = {
                 recursive: true,
             };
@@ -100,6 +109,11 @@ class IPFSSync extends EventEmitter {
                 }
 
                 const folder = result.find((file) => file.path === this.state.folder.basename);
+
+                if (!folder || !folder.hash) {
+                    logger.error('[IPFSSync] _addFilesToIPFS: folder not added', folder);
+                    return reject(err);
+                }
 
                 // the IPFS api returns a relative path,
                 // don't let it overwrite the full path
