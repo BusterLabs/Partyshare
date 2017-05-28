@@ -9,7 +9,7 @@
     "fix_asar": "sed -i '' 's|run(cmd, args|run(cmd.replace(\"app.asar\", \"app.asar.unpacked\"), args|' node_modules/ipfsd-ctl/src/exec.js",
     "lint": "eslint --ext .js --ext .jsx --format=node_modules/eslint-formatter-pretty src/",
     "preversion": "yarn build_ui",
-    "release": "yarn build_ui && build_electron",
+    "release": "yarn build_ui && yarn fix_asar && build --draft",
     "run_electron": "ENV=dev electron src/electron/main.js",
     "start": "yarn watch & yarn run_electron",
     "watch": "webpack --progress --colors --watch"
