@@ -117,7 +117,6 @@ class IPFSSync extends EventEmitter {
 
                 // the IPFS api returns a relative path,
                 // don't let it overwrite the full path
-
                 delete folder.path;
 
                 return resolve({
@@ -130,13 +129,12 @@ class IPFSSync extends EventEmitter {
 
     /**
      * Retry connecting to the daemon.
-     * @return {Promise}
      */
     _retryDaemonConnection() {
         logger.info('[IPFSSync] _retryDaemonConnection');
 
         if (this.state.daemonRetries > MAX_DAEMON_RECONNECTS) {
-            logger.error('[IPFSSync] _retryDaemonConnection: Exceeded max connection retries', this.state.daemonRetries)
+            logger.error('[IPFSSync] _retryDaemonConnection: Exceeded max connection retries', this.state.daemonRetries);
             return;
         }
 
