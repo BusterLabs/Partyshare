@@ -116,6 +116,7 @@ ipcMain.on(IPC_EVENT_HIDE_MENU, () => {
 
 ipcMain.on(IPC_EVENT_QUIT_APP, () => {
     mb.app.quit();
+    ipfsSync.quit();
 });
 
 ipcMain.on(IPC_EVENT_NOTIFICATION, (event, text) => {

@@ -69,6 +69,7 @@ class IPFSSync extends EventEmitter {
         this._startDaemon = this._startDaemon.bind(this);
         this.setState = this.setState.bind(this);
         this.start = this.start.bind(this);
+        this.quit = this.quit.bind(this);
         this.watch = this.watch.bind(this);
         return this;
     }
@@ -227,6 +228,19 @@ class IPFSSync extends EventEmitter {
         });
     }
 
+
+    /**
+     * Attempt to stop daemon
+     * @param {Node} node
+     */
+    _stopDaemon(node) {
+        node.stopDaemon((err, daemon) => {
+            if (err) {
+                logger.error('[IPFSSync] stopIPFSDaemon', err);
+            }
+        });
+    }
+
     // Public API ____________________________________________________________
     get state() {
         logger.info('[IPFSSync] get state');
@@ -261,10 +275,25 @@ class IPFSSync extends EventEmitter {
 
         return this._getNode()
                 .then(this._initNode)
+                .then((node) => {
+                    this.setState({ node });
+                    return node;
+                })
                 .then(this._startDaemon)
                 .then((daemon) => this.setState({ daemon, connected: true }))
                 .then(() => this._readAndSyncFiles())
                 .catch((e) => logger.error('[IPFSSync] startIPFS: ', e));
+    }
+
+    /**
+     * Quit IPFS
+     */
+    quit() {
+        logger.info('[IPFSSync] quit');
+
+        if (this._state.connected) {
+            this._stopDaemon(this._state.node);
+        }
     }
 
     /**

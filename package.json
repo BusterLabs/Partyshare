@@ -54,9 +54,30 @@
     "productName": "Partyshare",
     "icon": "build_assets/partyshare.icns",
     "forceCodeSigning": true,
+    "directories": {
+      "buildResources": "build_assets"
+    },
     "dmg": {
       "background": "build_assets/background.tiff",
       "title": "Install ${productName}"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "tar.gz",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "category": "public.app-category.productivity",
+      "icon":"icons"
     },
     "publish": [
       {
