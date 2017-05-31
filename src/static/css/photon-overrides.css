@@ -15,14 +15,6 @@
     padding: 0 5px;
 }
 
-.pane-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    text-align: center;
-}
-
 .pane-footer {
     position: absolute;
     bottom: 0;

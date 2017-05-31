@@ -1,7 +1,8 @@
 import { h } from 'preact';
+import styles from './Center.css';
 
 const Center = (children) => (
-    <div class="pane-center">
+    <div class={styles.this}>
         {children}
     </div>
 );
