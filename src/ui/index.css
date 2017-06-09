@@ -1,5 +1,9 @@
 :root {
     --white: #fff;
+    --light-gray: #F7F7F7;
+    --medium-gray: #DDD;
+    --dark-gray: #777777;
+    --darkest-gray: #4A4A4A;
 }
 
 .this {

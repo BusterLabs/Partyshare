@@ -4,24 +4,25 @@ import { isImage } from 'functions';
 import {
     IPC_EVENT_NOTIFICATION,
     IPC_EVENT_HIDE_MENU,
-} from '../../shared/constants';
+} from '../../../shared/constants';
 
+import styles from './FileListItem.css';
 
 const FileListItem = ({ name, path, url }) => (
-    <li className="file_list_item">
-        <span className="file_list_item--icon">
+    <li className={styles.this}>
+        <span className={styles.icon}>
             { isImage(path) ?
-                <img className="file_list_item--image" src={path} />
+                <img className={styles.image} src={path} />
             :
                 <span className="icon icon-doc-text" />
             }
         </span>
-        <p className="file_list_item--name">
+        <p className={styles.name}>
             { name }
         </p>
-        { url && [
+        { url &&
             <div
-              className="file_list_item--button"
+              className={styles.copy}
               title="Copy the share link to your clipboard"
               role="button"
               onClick={() => {
@@ -29,20 +30,9 @@ const FileListItem = ({ name, path, url }) => (
                   ipcRenderer.send(IPC_EVENT_NOTIFICATION, 'Share link copied to your clipboard');
               }}
             >
-                <span class="icon icon-link" />
-            </div>,
-            <div
-              className="file_list_item--button"
-              title="Open the share link in your browser"
-              role="button"
-              onClick={() => {
-                  shell.openExternal(url);
-                  ipcRenderer.send(IPC_EVENT_HIDE_MENU);
-              }}
-            >
-                <span class="icon icon-forward" />
-            </div>,
-        ]}
+                copy link
+            </div>
+        }
     </li>
 );
 
