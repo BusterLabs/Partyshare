@@ -40,11 +40,6 @@
     justify-content: center;
 }
 
-.file_list {
-    list-style: none;
-    margin: 0;
-    padding: 0px 20px;
-}
 
 .file_list_item {
     display: flex;
