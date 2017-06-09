@@ -14,7 +14,7 @@
 
 .icon,
 .image,
-.button {
+.copy {
     display: flex;
     flex-grow: 0;
     flex-shrink: 0;
@@ -47,7 +47,7 @@
 }
 
 .copy {
-    padding: 2px 8px;
+    padding: 3px 10px;
     margin: 0 0 0 10px;
     font-size: 12px;
     color: var(--dark-gray);

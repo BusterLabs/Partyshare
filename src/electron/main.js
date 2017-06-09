@@ -38,7 +38,7 @@ const mb = menubar({
     preloadWindow: true,
     alwaysOnTop: __DEV__,
     width: 350,
-    height: 400,
+    height: 402, // So 6 items fit perfecly in the window
 });
 
 mb.on('ready', () => {
