@@ -16,6 +16,8 @@ const {
     IPC_EVENT_QUIT_APP,
 } = require('../shared/constants');
 
+import styles from './index.css';
+
 class Application extends Component {
 
     constructor(props) {
@@ -77,7 +79,7 @@ class Application extends Component {
         const totalSize = filesize(files.reduce((total, file) => total + file.stats.size, 0), { fixed: 1 }).human('si');
 
         return (
-            <div class="window"
+            <div class={styles.this}
               onDragOver={(e) => e.preventDefault()}
               onDrop={this.onDrop}
             >
@@ -96,14 +98,10 @@ class Application extends Component {
                     />
                 </Header>
 
-                <div class="window-content">
-                    <div class="pane-group">
-                        <div class="pane">
-                            { notification ? <Notification>{notification}</Notification> : null }
-                            { connected ? <FileList files={files} synced={synced} folder={folder} /> : <Center>Connecting…</Center>}
-                            { files && files.length < 1 && <Footer>* Heads up, files added to IPFS can‘t be deleted</Footer>}
-                        </div>
-                    </div>
+                <div class={styles.content}>
+                    { notification ? <Notification>{notification}</Notification> : null }
+                    { connected ? <FileList files={files} synced={synced} folder={folder} /> : <Center>Connecting…</Center>}
+                    { files && files.length < 1 && <Footer>* Heads up, files added to IPFS can‘t be deleted</Footer>}
                 </div>
             </div>
         );
