@@ -4,7 +4,7 @@ import { isImage } from 'functions';
 import {
     IPC_EVENT_NOTIFICATION,
 } from '../../../shared/constants';
-
+import IconFile from 'icons/IconFile';
 import styles from './FileListItem.css';
 
 const FileListItem = ({ name, path, url }) => (
@@ -13,7 +13,7 @@ const FileListItem = ({ name, path, url }) => (
             { isImage(path) ?
                 <img className={styles.image} src={path} />
             :
-                <span className="icon icon-doc-text" />
+                <IconFile />
             }
         </span>
         <p className={styles.name}>

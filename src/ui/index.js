@@ -7,6 +7,8 @@ import Footer from 'components/Footer';
 import Header from 'components/Header';
 import Notification from 'components/Notification';
 import Title from 'components/Title';
+import IconCog from 'icons/IconCog';
+import IconFolder from 'icons/IconFolder';
 import { basename, join } from 'path';
 import { ipcRenderer, shell, remote } from 'electron';
 const { Menu, MenuItem } = remote;
@@ -108,7 +110,7 @@ class Application extends Component {
                       title="Quit Partyshare"
                       onClick={this.openSettingsMenu}
                     >
-                        <span class="icon icon-cancel-circled" />
+                        <IconCog />
                     </Button>
                     <Title>
                         {connected && synced && `Sharing ${files.length} files (${totalSize})`}
@@ -118,7 +120,7 @@ class Application extends Component {
                       title="Open folder"
                       onClick={this.openFolder}
                     >
-                        <span class="icon icon-folder" />
+                        <IconFolder />
                     </Button>
                 </Header>
 
