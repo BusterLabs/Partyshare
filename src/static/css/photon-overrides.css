@@ -15,17 +15,6 @@
     padding: 0 5px;
 }
 
-.pane-footer {
-    position: absolute;
-    bottom: 0;
-    padding: 10px;
-    text-align: center;
-    width: 100%;
-    color: #C2C0C2;
-    font-size: 0.75rem;
-    font-weight: 400;
-}
-
 .toolbar-header {
     display: flex;
     padding: 10px 10px;

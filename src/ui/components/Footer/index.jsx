@@ -1,7 +1,9 @@
 import { h } from 'preact';
 
+import styles from './Footer.css';
+
 const Footer = (children) => (
-    <div class="pane-footer">
+    <div class={styles.this}>
         {children}
     </div>
 );

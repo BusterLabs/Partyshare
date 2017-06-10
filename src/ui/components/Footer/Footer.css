@@ -1,0 +1,10 @@
+.this {
+    position: absolute;
+    bottom: 0;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    color: var(--dark-gray);
+    font-size: 0.75rem;
+    font-weight: 400;
+}
