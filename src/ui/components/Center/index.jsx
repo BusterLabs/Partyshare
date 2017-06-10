@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import styles from './Center.css';
 
-const Center = (children) => (
+const Center = ({ children }) => (
     <div class={styles.this}>
         {children}
     </div>

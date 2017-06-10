@@ -1,9 +1,8 @@
 import { h } from 'preact';
-import { shell, clipboard, ipcRenderer } from 'electron';
+import { clipboard, ipcRenderer } from 'electron';
 import { isImage } from 'functions';
 import {
     IPC_EVENT_NOTIFICATION,
-    IPC_EVENT_HIDE_MENU,
 } from '../../../shared/constants';
 
 import styles from './FileListItem.css';

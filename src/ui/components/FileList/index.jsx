@@ -1,8 +1,8 @@
 import { h } from 'preact';
-import FileListItem from 'components/FileListItem';
+import Button from 'components/Button';
 import Center from 'components/Center';
+import FileListItem from 'components/FileListItem';
 import { GATEWAY_URL } from '../../../electron/constants';
-import { Button } from 'preact-photon';
 import { shell, ipcRenderer } from 'electron';
 import {
     IPC_EVENT_HIDE_MENU,

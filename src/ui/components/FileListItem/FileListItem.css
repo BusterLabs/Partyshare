@@ -3,13 +3,13 @@
     flex-direction: row;
     align-items: center;
     padding: 0 15px;
-    height: 60px;
+    height: 58px;
     border-bottom: 1px solid var(--medium-gray);
     transition: background-colorq 100ms ease-out;
 }
 
 .this:hover {
-    background-color: var(--light-gray);
+    background-color: var(--lightest-gray);
 }
 
 .icon,

@@ -1,10 +1,12 @@
 import 'babel-polyfill';
 import { h, Component, render } from 'preact';
-import { Header, Title, Button } from 'preact-photon';
-import FileList from 'components/FileList';
+import Button from 'components/Button';
 import Center from 'components/Center';
+import FileList from 'components/FileList';
 import Footer from 'components/Footer';
+import Header from 'components/Header';
 import Notification from 'components/Notification';
+import Title from 'components/Title';
 import { basename, join } from 'path';
 import { ipcRenderer, shell } from 'electron';
 import fs from 'fs-extra';
@@ -84,18 +86,22 @@ class Application extends Component {
               onDrop={this.onDrop}
             >
                 <Header>
-                    <Button icon="cancel-circled"
+                    <Button
                       title="Quit Partyshare"
                       onClick={() => ipcRenderer.send(IPC_EVENT_QUIT_APP)}
-                    />
+                    >
+                        <span class="icon icon-cancel-circled" />
+                    </Button>
                     <Title>
                         {connected && synced && `Sharing ${files.length} files (${totalSize})`}
                         {connected && !synced && 'Syncing…'}
                     </Title>
-                    <Button icon="folder"
+                    <Button
                       title="Open folder"
                       onClick={this.openFolder}
-                    />
+                    >
+                        <span class="icon icon-folder" />
+                    </Button>
                 </Header>
 
                 <div class={styles.content}>
