@@ -12,6 +12,7 @@
     --yellow: #FBFF64;
     --blue: #76D3FF;
     font-family: system, -apple-system, ".SFNSDisplay-Regular", "Helvetica Neue", Helvetica, "Segoe UI", sans-serif;
+    font-size: 80%;
 }
 
 .this {
