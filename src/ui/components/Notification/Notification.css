@@ -18,7 +18,7 @@
     padding: 5px;
     z-index: 100;
     background-color: var(--green);
-    color: var(--dark-gray);
+    color: var(--darkest-gray);
     animation: fadeIn 180ms ease-out;
     animation-fill-mode: both;
 }
