@@ -5,8 +5,8 @@ const { format } = require('url');
 
 const __DEV__ = process.env.ENV === 'dev';
 const GATEWAY_URL = __DEV__ ? 'http://localhost:8080/ipfs/' : 'https://gateway.ipfs.io/ipfs';
-const LIGHT_MENUBAR_ICON_PATH = resolve(__dirname, '..', 'static', 'icons', 'icon-menubar-light@2x.png');
-const DARK_MENUBAR_ICON_PATH = resolve(__dirname, '..', 'static', 'icons', 'icon-menubar-dark@2x.png');
+const LIGHT_MENUBAR_ICON_PATH = resolve(__dirname, '..', 'static', 'images', 'icon-menubar-light@2x.png');
+const DARK_MENUBAR_ICON_PATH = resolve(__dirname, '..', 'static', 'images', 'icon-menubar-dark@2x.png');
 
 const INDEX_PATH = format({
     pathname: resolve(__dirname, '..', 'index.html'),
