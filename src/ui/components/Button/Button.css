@@ -10,7 +10,7 @@
     cursor: default;
     background-image: none;
     border: 1px solid transparent;
-    border-radius: 4px;
+    border-radius: var(--radius-size);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.06);
     -webkit-app-region: no-drag;
     cursor: pointer;
@@ -36,8 +36,6 @@
     border-bottom-color: #a19fa1;
     border-left-color: #c2c0c2;
     background-color: #fcfcfc;
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fcfcfc), color-stop(100%, #f1f1f1));
-    background-image: -webkit-linear-gradient(top, #fcfcfc 0%, #f1f1f1 100%);
     background-image: linear-gradient(to bottom, #fcfcfc 0%, #f1f1f1 100%);
 }
 
