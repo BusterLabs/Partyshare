@@ -2,20 +2,17 @@ import { h } from 'preact';
 import styles from './Button.css';
 
 const Button = ({
-	class: className,
-	children,
-	type,
-	primary,
-	title,
-	onClick,
+    className,
+    children,
+    type = 'default',
+    ...props
 }) => (
-	<button
-	  	class={`${styles.this} ${styles[type || (primary ? 'primary' : 'default')]} ${className ? className : ''}`}
-	  	title={title}
-	  	onClick={onClick}
-	>
-		{ children }
-	</button>
+    <button
+      className={`${styles.this} ${styles[type]} ${className ? className : ''}`}
+      {...props}
+    >
+        { children }
+    </button>
 );
 
 export default Button;
