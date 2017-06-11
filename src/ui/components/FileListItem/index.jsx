@@ -21,15 +21,17 @@ const FileListItem = ({ name, path, url }) => (
         </p>
         { url &&
             <div
-              className={styles.copy}
-              title="Copy the share link to your clipboard"
+              className={styles.copy_hit_area}
+              title="Copy link to your clipboard"
               role="button"
               onClick={() => {
                   clipboard.writeText(url, 'selection');
-                  ipcRenderer.send(IPC_EVENT_NOTIFICATION, 'Share link copied to your clipboard');
+                  ipcRenderer.send(IPC_EVENT_NOTIFICATION, 'Link copied to your clipboard');
               }}
             >
-                copy link
+                <span className={styles.copy_button}>
+                    Copy Link
+                </span>
             </div>
         }
     </li>

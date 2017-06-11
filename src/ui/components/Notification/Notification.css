@@ -15,10 +15,12 @@
     position: absolute;
     margin: 10px 10%;
     text-align: center;
-    padding: 5px;
+    padding: 8px 5px;
     z-index: 100;
+    color: var(--dark-green);
     background-color: var(--green);
-    color: var(--darkest-gray);
+    font-weight: 500;
+    font-size: 1.1rem;
     animation: fadeIn 180ms ease-out;
     animation-fill-mode: both;
 }

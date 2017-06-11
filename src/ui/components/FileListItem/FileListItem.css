@@ -9,12 +9,12 @@
 }
 
 .this:hover {
-    background-color: var(--lightest-gray);
+    background-color: var(--light-gray);
 }
 
 .icon,
 .image,
-.copy {
+.copy_hit_area {
     display: flex;
     flex-grow: 0;
     flex-shrink: 0;
@@ -45,17 +45,25 @@
     text-overflow: ellipsis;
 }
 
-.copy {
-    padding: 3px 10px;
-    margin: 0 0 0 10px;
-    font-size: 0.9rem;
-    color: var(--dark-gray);
-    border-radius: 4px;
+.copy_hit_area {
     cursor: pointer;
+    padding: 0 0 0 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.copy_hit_area:hover .copy_button {
+    color: var(--dark-green);
+    background-color: var(--green);
+}
+
+.copy_button {
+    padding: 4px 5px;
+    font-size: 0.95rem;
+    color: var(--dark-gray);
+    font-weight: 500;
+    border-radius: 4px;
     transition: all 100ms ease-out;
 }
 
-.copy:hover {
-    color: var(--darkest-gray);
-    background-color: var(--medium-gray);
-}
