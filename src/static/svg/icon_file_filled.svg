@@ -1,9 +1,3 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125">
-    <path d="M20 9v82h60V29H62a2 2 0 0 1-2-2V9H20zm44 2v14h14L64 11zM30 41h32a2 2 0 1 1 0 4H30a2 2 0 1 1 0-4zm0 16h40a2 2 0 1 1 0 4H30a2 2 0 1 1 0-4zm0 16h40a2 2 0 1 1 0 4H30a2 2 0 1 1 0-4z" overflow="visible" color="#000"/>
-    <text y="115" font-size="5" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">
-        Created by arjuazka
-    </text>
-    <text y="120" font-size="5" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">
-        from the Noun Project
-    </text>
+    <path d="M20 9v82h60V29H62a2 2 0 0 1-2-2V9H20zm44 2v14h14L64 11zM30 41h32a2 2 0 1 1 0 4H30a2 2 0 1 1 0-4zm0 16h40a2 2 0 1 1 0 4H30a2 2 0 1 1 0-4zm0 16h40a2 2 0 1 1 0 4H30a2 2 0 1 1 0-4z" overflow="visible"/>
 </svg>
