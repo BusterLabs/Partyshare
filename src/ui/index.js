@@ -77,7 +77,7 @@ class Application extends Component {
         menu.append(new MenuItem({ label: `Version ${version}`, enabled: false }));
         menu.append(new MenuItem({ type: 'separator' }));
         menu.append(new MenuItem({ label: 'Spread the Word', click: () => shell.openExternal(URL_TWEET) }));
-        menu.append(new MenuItem({ label: 'Hack on Partyshare', click: () => shell.openExternal(URL_HACK) }));
+        menu.append(new MenuItem({ label: 'Contribute to Partyshare', click: () => shell.openExternal(URL_HACK) }));
         menu.append(new MenuItem({ label: 'Report a Bug', click: () => shell.openExternal(URL_BUG) }));
         menu.append(new MenuItem({ type: 'separator' }));
         menu.append(new MenuItem({ label: 'Quit Partyshare', click: () => ipcRenderer.send(IPC_EVENT_QUIT_APP) }));
