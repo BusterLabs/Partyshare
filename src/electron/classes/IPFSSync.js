@@ -9,6 +9,7 @@ const {
 } = require('../functions.js');
 const {
     basename,
+    join,
  } = require('path');
 const {
     IPFS_FOLDER,
@@ -86,44 +87,55 @@ class IPFSSync extends EventEmitter {
      * @param  {Array} files
      * @return {Promise}
      */
-    _addFilesToIPFS(files) {
+    _addFilesToIPFS(fileNames) {
         logger.info('[IPFSSync] _addFilesToIPFS');
 
         return new Promise((resolve, reject) => {
 
-            if (files.length < 1) {
+            if (fileNames.length < 1) {
                 resolve({
-                    files,
+                    files: [],
                     folder: this.state.folder,
                 });
                 return;
             }
 
+
             const options = {
                 recursive: true,
             };
-            this.state.daemon.util.addFromFs(this.state.folder.path, options, (err, result) => {
-                if (err) {
-                    logger.error('[IPFSSync] _addFilesToIPFS', err);
-                    return reject(err);
-                }
 
-                const folder = result.find((file) => file.path === this.state.folder.basename);
+            const promises = fileNames.map((fileName) => this.state.daemon.util.addFromFs(join(this.state.folder.path, fileName), options));
+            Promise.all(promises)
+                .then((group) => {
+                    const files = [];
+                    group.forEach((fileOrFolder) => {
+                        if (fileOrFolder.length === 1) {
+                            // This is just a file, append it to the list
+                            const file = fileOrFolder[0];
+                            file.name = file.path;
+                            file.urlPath = file.hash;
+                            file.path = join(this.state.folder.path, file.path);
+                            files.push(file);
+                            return;
+                        }
 
-                if (!folder || !folder.hash) {
-                    logger.error('[IPFSSync] _addFilesToIPFS: folder not added', folder);
-                    return reject(err);
-                }
+                        const folder = fileOrFolder.find((item) => fileNames.indexOf(item.path) > -1);
+                        const folderContents = fileOrFolder.filter((item) => item !== folder);
 
-                // the IPFS api returns a relative path,
-                // don't let it overwrite the full path
-                delete folder.path;
+                        folderContents.forEach((file) => {
+                            file.name = basename(file.path);
+                            file.urlPath = file.path.replace(folder.path, folder.hash);
+                            file.path = join(this.state.folder.path, file.path);
+                            files.push(file);
+                        });
+                    });
 
-                return resolve({
-                    files,
-                    folder: Object.assign({}, this.state.folder, folder),
+                    resolve({
+                        files,
+                        folder: this.state.folder,
+                    });
                 });
-            });
         });
     }
 

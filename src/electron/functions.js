@@ -1,6 +1,6 @@
 const { basename } = require('path');
 const fse = require('fs-extra');
-const klaw = require('klaw');
+const fs = require('fs');
 
 const filterHiddenFiles = (item) => {
     const base = basename(item);
@@ -14,22 +14,14 @@ const getFiles = (dirPath) => {
                 return reject(err);
             }
 
-            const items = [];
-            return klaw(dirPath, { filter: filterHiddenFiles })
-                .on('data', (item) => {
-                    if (item.path === dirPath) {
-                        return;
-                    }
-
-                    if (item.stats.isDirectory()) {
-                        return;
-                    }
-
-                    items.push(item);
-                })
-                .on('end', () => {
-                    resolve(items);
-                });
+            fs.readdir(dirPath, (err, files) => {
+                if (err) {
+                    return reject(err);
+                }
+                // Remove hidden files
+                files = files.filter((file) => file.startsWith('.') === false);
+                return resolve(files);
+            });
         });
     });
 };
