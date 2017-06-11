@@ -19,6 +19,7 @@ import {
     IPC_EVENT_SEND_STATE,
     IPC_EVENT_HIDE_MENU,
     IPC_EVENT_QUIT_APP,
+    URL_ATTRIBUTION,
     URL_BUG,
     URL_CONTRIBUTE,
     URL_TWEET,
@@ -75,6 +76,8 @@ class Application extends Component {
     openSettingsMenu() {
         const menu = new Menu();
         menu.append(new MenuItem({ label: `Version ${version}`, enabled: false }));
+        menu.append(new MenuItem({ type: 'separator' }));
+        menu.append(new MenuItem({ label: 'Attribution', click: () => shell.openExternal(URL_ATTRIBUTION) }));
         menu.append(new MenuItem({ type: 'separator' }));
         menu.append(new MenuItem({ label: 'Spread the Word', click: () => shell.openExternal(URL_TWEET) }));
         menu.append(new MenuItem({ label: 'Contribute to Partyshare', click: () => shell.openExternal(URL_CONTRIBUTE) }));
