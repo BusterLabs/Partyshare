@@ -1,18 +1,25 @@
 import { h } from 'preact';
-import FileListItem from 'components/FileListItem';
+import Button from 'components/Button';
 import Center from 'components/Center';
-import { GATEWAY_URL } from '../../electron/constants';
-import { Button } from 'preact-photon';
+import FileListItem from 'components/FileListItem';
+import { GATEWAY_URL } from '../../../electron/constants';
 import { shell, ipcRenderer } from 'electron';
 import {
     IPC_EVENT_HIDE_MENU,
-} from '../../shared/constants';
+} from '../../../shared/constants';
 import {
     basename,
     relative,
 } from 'path';
 
-const FileList = ({ files, synced, folder }) => {
+import styles from './FileList.css';
+
+const FileList = ({
+    files,
+    synced,
+    folder,
+    ...props
+}) => {
     if (files.length < 1 && !synced) {
         return (
             <Center>Syncing…</Center>
@@ -25,7 +32,7 @@ const FileList = ({ files, synced, folder }) => {
                 <p>Drag a file into your Partyshare folder to begin</p>
                 <Button
                   onClick={() => {
-                      shell.openItem(folder);
+                      shell.openItem(folder.path);
                       ipcRenderer.send(IPC_EVENT_HIDE_MENU);
                   }}
                 >
@@ -38,7 +45,7 @@ const FileList = ({ files, synced, folder }) => {
     files = files.sort((a, b) => new Date(b.stats.ctime) - new Date(a.stats.ctime));
 
     return (
-        <ul className="file_list">
+        <ul className={styles.this} {...props}>
             {files.map((file) => <FileListItem
               name={basename(file.path)}
               path={file.path}

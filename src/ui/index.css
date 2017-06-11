@@ -1,0 +1,36 @@
+:root {
+    --white: #fff;
+    --lightest-gray: #F7F7F7;
+    --light-gray: #E8E6E8;
+    --medium-gray: #D1CfD1;
+    --dark-gray: #777777;
+    --darkest-gray: #4A4A4A;
+    --green: #41F5C0;
+    --dark-green: #238568;
+    --purple: #D78BFF;
+    --pink: #FF8FE5;
+    --orange: #FF7744;
+    --yellow: #FBFF64;
+    --blue: #76D3FF;
+    font-family: system, -apple-system, ".SFNSDisplay-Regular", "Helvetica Neue", Helvetica, "Segoe UI", sans-serif;
+    font-size: 80%;
+    --radius-size: 4px;
+}
+
+.this {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--white);
+    overflow: scroll;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+}

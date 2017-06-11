@@ -1,0 +1,37 @@
+.this {
+    display: inline-block;
+    padding: 3px 8px;
+    margin-bottom: 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: default;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: var(--radius-size);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.06);
+    -webkit-app-region: no-drag;
+    cursor: pointer;
+}
+
+.this:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.default {
+    color: #333;
+    border-top-color: #c2c0c2;
+    border-right-color: #c2c0c2;
+    border-bottom-color: #a19fa1;
+    border-left-color: #c2c0c2;
+    background-color: #fcfcfc;
+    background-image: linear-gradient(to bottom, #fcfcfc 0%, #f1f1f1 100%);
+}
+
+.default:active {
+    background-color: #ddd;
+    background-image: none;
+}

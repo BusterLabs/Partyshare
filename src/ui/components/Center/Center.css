@@ -1,0 +1,9 @@
+.this {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: var(--dark-gray);
+    height: 100%;
+    text-align: center;
+}

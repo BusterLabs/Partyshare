@@ -1,0 +1,74 @@
+.this {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 15px;
+    height: 58px;
+    border-bottom: 1px solid var(--medium-gray);
+    transition: background-colorq 100ms ease-out;
+}
+
+.this:hover {
+    background-color: var(--light-gray);
+}
+
+.icon,
+.image,
+.copy_hit_area {
+    display: flex;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.icon {
+    margin-right: 20px;
+    width: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+.file {
+    width: 25px;
+    height: 30px;
+    fill: var(--dark-gray);
+}
+
+.image {
+    max-width: 40px;
+    max-height: 40px;
+    border-radius: 2px;
+}
+
+.name {
+    flex: 1;
+    padding: 0;
+    margin: 0;
+    font-size: 1rem;
+    color: #4A4A4A;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.copy_hit_area {
+    cursor: pointer;
+    padding: 0 0 0 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.copy_hit_area:hover .copy_button {
+    color: var(--dark-green);
+    background-color: var(--green);
+}
+
+.copy_button {
+    padding: 4px 5px;
+    font-size: 0.95rem;
+    color: var(--dark-gray);
+    font-weight: 500;
+    border-radius: var(--radius-size);
+    transition: all 100ms ease-out;
+}
+

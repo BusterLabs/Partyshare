@@ -1,0 +1,10 @@
+.this {
+    display: flex;
+    flex-direction: row;
+    height: 29px;
+    padding: 10px 15px;
+    box-shadow: inset 0 1px 0 #f5f4f5;
+    background-color: var(--light-gray);
+    background-image: linear-gradient(to bottom, var(--light-gray) 0%, var(--medium-gray) 100%);
+    border-bottom: 1px solid #c2c0c2;
+}

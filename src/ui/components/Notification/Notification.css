@@ -1,0 +1,26 @@
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.this {
+    width: 80vw;
+    border-radius: var(--radius-size);
+    position: absolute;
+    margin: 10px 10%;
+    text-align: center;
+    padding: 8px 5px;
+    z-index: 100;
+    color: var(--dark-green);
+    background-color: var(--green);
+    font-weight: 500;
+    font-size: 1.1rem;
+    animation: fadeIn 180ms ease-out;
+    animation-fill-mode: both;
+}
