@@ -1,8 +1,11 @@
 import { h } from 'preact';
 import styles from './Footer.css';
 
-const Footer = ({ children }) => (
-    <footer class={styles.this}>
+const Footer = ({
+    children,
+    ...props
+}) => (
+    <footer class={styles.this} {...props}>
         {children}
     </footer>
 );

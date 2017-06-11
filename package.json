@@ -19,6 +19,7 @@
   "author": "Ben Stahl <bhstahl@gmail.com>",
   "license": "CC0-1.0",
   "dependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "core-js": "^2.4.1",
     "css-loader": "^0.28.4",
     "electron-log": "^2.2.2",

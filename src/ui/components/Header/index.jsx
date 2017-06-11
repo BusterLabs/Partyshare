@@ -1,8 +1,11 @@
 import { h } from 'preact';
 import styles from './Header.css';
 
-const Header = ({ children }) => (
-    <header class={styles.this}>
+const Header = ({
+    children,
+    ...props
+}) => (
+    <header class={styles.this} {...props}>
         {children}
     </header>
 );

@@ -7,8 +7,13 @@ import {
 import IconFile from 'icons/IconFile';
 import styles from './FileListItem.css';
 
-const FileListItem = ({ name, path, url }) => (
-    <li className={styles.this}>
+const FileListItem = ({
+    name,
+    path,
+    url,
+    ...props
+}) => (
+    <li className={styles.this} {...props}>
         <span className={styles.icon}>
             { isImage(path) ?
                 <img className={styles.image} src={path} />

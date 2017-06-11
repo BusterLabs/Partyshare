@@ -14,7 +14,12 @@ import {
 
 import styles from './FileList.css';
 
-const FileList = ({ files, synced, folder }) => {
+const FileList = ({
+    files,
+    synced,
+    folder,
+    ...props
+}) => {
     if (files.length < 1 && !synced) {
         return (
             <Center>Syncing…</Center>
@@ -40,7 +45,7 @@ const FileList = ({ files, synced, folder }) => {
     files = files.sort((a, b) => new Date(b.stats.ctime) - new Date(a.stats.ctime));
 
     return (
-        <ul className={styles.this}>
+        <ul className={styles.this} {...props}>
             {files.map((file) => <FileListItem
               name={basename(file.path)}
               path={file.path}
