@@ -34,3 +34,12 @@
     flex-direction: column;
     flex-basis: 100%;
 }
+
+.header_button_icon {
+    fill: var(--dark-gray);
+    transition: fill 100ms ease-out;
+}
+
+.header_button:hover .header_button_icon {
+    fill: var(--darkest-gray);
+}

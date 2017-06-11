@@ -109,18 +109,24 @@ class Application extends Component {
                     <Button
                       title="Quit Partyshare"
                       onClick={this.openSettingsMenu}
+                      className={styles.header_button}
                     >
-                        <IconCog />
+                        <IconCog
+                          className={styles.header_button_icon}
+                        />
                     </Button>
                     <Title>
                         {connected && synced && `Sharing ${files.length} files (${totalSize})`}
                         {connected && !synced && 'Syncing…'}
                     </Title>
                     <Button
-                      title="Open folder"
+                      title="Open Folder"
                       onClick={this.openFolder}
+                      className={styles.header_button}
                     >
-                        <IconFolder />
+                        <IconFolder
+                          className={styles.header_button_icon}
+                        />
                     </Button>
                 </Header>
 
