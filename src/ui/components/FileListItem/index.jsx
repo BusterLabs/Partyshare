@@ -18,7 +18,7 @@ const FileListItem = ({
             { isImage(path) ?
                 <img className={styles.image} src={path} />
             :
-                <IconFile />
+                <IconFile className={styles.file} />
             }
         </span>
         <p className={styles.name}>

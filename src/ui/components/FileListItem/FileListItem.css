@@ -25,13 +25,18 @@
     width: 40px;
     justify-content: center;
     align-items: center;
-    color: var(--medium-gray);
+}
+
+.file {
+    width: 25px;
+    height: 30px;
+    fill: var(--dark-gray);
 }
 
 .image {
     max-width: 40px;
     max-height: 40px;
-    border-radius: var(--radius-size);
+    border-radius: 2px;
 }
 
 .name {
