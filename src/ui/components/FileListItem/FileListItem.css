@@ -5,7 +5,7 @@
     padding: 0 15px;
     height: 58px;
     border-bottom: 1px solid var(--medium-gray);
-    transition: background-colorq 100ms ease-out;
+    transition: background-color 100ms ease-out;
 }
 
 .this:hover {
