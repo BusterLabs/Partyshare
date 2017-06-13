@@ -19,14 +19,14 @@ const filterHiddenFiles = (fileName) => {
  */
 const getFiles = (dirPath) => {
     return new Promise((resolve, reject) => {
-        fse.ensureDir(dirPath, (err) => {
-            if (err) {
-                return reject(err);
+        fse.ensureDir(dirPath, (ensureErr) => {
+            if (ensureErr) {
+                return reject(ensureErr);
             }
 
-            fs.readdir(dirPath, (err, files) => {
-                if (err) {
-                    return reject(err);
+            fs.readdir(dirPath, (readErr, files) => {
+                if (readErr) {
+                    return reject(readErr);
                 }
 
                 files = files.filter(filterHiddenFiles);

@@ -10,11 +10,11 @@ const {
 const {
     basename,
     join,
- } = require('path');
+} = require('path');
 const {
     IPFS_FOLDER,
     IPFS_REPO,
- } = require('../constants.js');
+} = require('../constants.js');
 const {
     IPC_EVENT_FILES_ADDED,
     IPC_EVENT_STATE_CHANGE,
@@ -330,15 +330,15 @@ class IPFSSync extends EventEmitter {
         this.watch();
 
         return this._getNode()
-                .then(this._initNode)
-                .then((node) => {
-                    this.setState({ node });
-                    return node;
-                })
-                .then(this._startDaemon)
-                .then((daemon) => this.setState({ daemon, connected: true }))
-                .then(() => this._readAndSyncFiles())
-                .catch((e) => logger.error('[IPFSSync] startIPFS: ', e));
+            .then(this._initNode)
+            .then((node) => {
+                this.setState({ node });
+                return node;
+            })
+            .then(this._startDaemon)
+            .then((daemon) => this.setState({ daemon, connected: true }))
+            .then(() => this._readAndSyncFiles())
+            .catch((e) => logger.error('[IPFSSync] startIPFS: ', e));
     }
 
     /**
