@@ -9,6 +9,7 @@ const {
 } = require('../functions.js');
 const {
     basename,
+    extname,
     join,
 } = require('path');
 const {
@@ -71,6 +72,8 @@ class IPFSSync extends EventEmitter {
         this._getConfig = this._getConfig.bind(this);
         this._getNode = this._getNode.bind(this);
         this._initNode = this._initNode.bind(this);
+        this._addFile = this._addFile.bind(this);
+        this._addDirectory = this._addDirectory.bind(this);
         this._readAndSyncFiles = this._readAndSyncFiles.bind(this);
         this._retryDaemonConnection = this._retryDaemonConnection.bind(this);
         this._startDaemon = this._startDaemon.bind(this);
@@ -79,6 +82,44 @@ class IPFSSync extends EventEmitter {
         this.quit = this.quit.bind(this);
         this.watch = this.watch.bind(this);
         return this;
+    }
+
+    _addFile(fullPath) {
+        const fileName = basename(fullPath);
+        const fakeDirectory = basename(basename(fileName), extname(fileName)).trim();
+        const file = {
+            path: join(fakeDirectory, fileName),
+            content: fs.createReadStream(fullPath),
+        };
+
+        return this.state.daemon.add([file], { wrap: true })
+            .then((result) => {
+                const [fileObject, dirObject] = result;
+                fileObject.urlPath = join(dirObject.hash, fileName);
+                fileObject.name = fileName;
+                fileObject.path = fullPath;
+                return Promise.resolve([fileObject]);
+            })
+            .catch((error) => {
+                console.log(file.path, fileName, error);
+            });
+    }
+
+    _addDirectory(path) {
+        return this.state.daemon.util.addFromFs(path, { recursive: true })
+            .then((objects) => {
+                return new Promise((resolve) => {
+                    const dirName = basename(path);
+                    const folder = objects.find((item) => dirName.indexOf(item.path) > -1);
+                    const files = objects.filter((item) => item !== folder).map((file) => {
+                        file.name = basename(file.path);
+                        file.urlPath = file.path.replace(folder.path, folder.hash);
+                        file.path = join(this.state.folder.path, file.path);
+                        return file;
+                    });
+                    return resolve(files);
+                });
+            });
     }
 
     /**
@@ -90,53 +131,38 @@ class IPFSSync extends EventEmitter {
     _addFilesToIPFS(fileNames) {
         logger.info('[IPFSSync] _addFilesToIPFS');
 
-        return new Promise((resolve, reject) => {
+        if (fileNames.length < 1) {
+            return Promise.resolve({
+                files: [],
+                folder: this.state.folder,
+            });
+        }
 
-            if (fileNames.length < 1) {
-                resolve({
-                    files: [],
-                    folder: this.state.folder,
+        const promises = fileNames.map((fileName) => {
+            return new Promise((resolve, reject) => {
+                const fullPath = join(this.state.folder.path, fileName);
+
+                fs.stat(fullPath, (err, stats) => {
+                    if (err) {
+                        return reject(err);
+                    }
+
+                    if (stats.isDirectory()) {
+                        return this._addDirectory(fullPath)
+                            .then(resolve)
+                            .catch(reject);
+                    }
+
+                    return this._addFile(fullPath)
+                        .then(resolve)
+                        .catch(reject);
                 });
-                return;
-            }
-
-
-            const options = {
-                recursive: true,
-            };
-
-            const promises = fileNames.map((fileName) => this.state.daemon.util.addFromFs(join(this.state.folder.path, fileName), options));
-            Promise.all(promises)
-                .then((group) => {
-                    const files = [];
-                    group.forEach((fileOrFolder) => {
-                        if (fileOrFolder.length === 1) {
-                            // This is just a file, append it to the list
-                            const file = fileOrFolder[0];
-                            file.name = file.path;
-                            file.urlPath = file.hash;
-                            file.path = join(this.state.folder.path, file.path);
-                            files.push(file);
-                            return;
-                        }
-
-                        const folder = fileOrFolder.find((item) => fileNames.indexOf(item.path) > -1);
-                        const folderContents = fileOrFolder.filter((item) => item !== folder);
-
-                        folderContents.forEach((file) => {
-                            file.name = basename(file.path);
-                            file.urlPath = file.path.replace(folder.path, folder.hash);
-                            file.path = join(this.state.folder.path, file.path);
-                            files.push(file);
-                        });
-                    });
-
-                    resolve({
-                        files,
-                        folder: this.state.folder,
-                    });
-                });
+            });
         });
+
+
+        return Promise.all(promises)
+            .then((groups) => [].concat(...groups));
     }
 
     /**
@@ -171,7 +197,7 @@ class IPFSSync extends EventEmitter {
 
         return getFiles(this.state.folder.path)
             .then(this._addFilesToIPFS)
-            .then(({ files, folder }) => this.setState({ files, folder, synced: true }))
+            .then((files) => this.setState({ files, folder: this.state.folder, synced: true }))
             .catch((e) => {
                 logger.error('[IPFSSync] _readAndSyncFiles: ', e);
                 this._retryDaemonConnection();
