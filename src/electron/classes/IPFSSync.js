@@ -350,7 +350,7 @@ class IPFSSync extends EventEmitter {
                 logger.error('[IPFSSync] watch', err);
                 return;
             }
-            fs.watch(this.state.folder.path, this._readAndSyncFiles);
+            fs.watch(this.state.folder.path, { recursive: true }, this._readAndSyncFiles);
         });
     }
 }
