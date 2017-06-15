@@ -26,7 +26,7 @@ const DEFAULTS = {
     autoStart: true,
 };
 
-const MAX_DAEMON_RECONNECTS = 5;
+const MAX_RECONNECTS = 5;
 
 /**
 * Keep a folder in sync with your IPFS repo. Any files added
@@ -49,8 +49,8 @@ class IPFSSync extends EventEmitter {
                 path: folderPath,
                 basename: basename(folderPath),
             },
-            daemon: null,
-            daemonRetries: 0,
+            ipfs: null,
+            connectRetries: 0,
             connected: false,
             synced: false,
         };
@@ -68,15 +68,16 @@ class IPFSSync extends EventEmitter {
      */
     _bindMethods() {
         logger.info('[IPFSSync] _bindMethods');
-        this._addFilesToIPFS = this._addFilesToIPFS.bind(this);
+        this._addDirectory = this._addDirectory.bind(this);
+        this._addFile = this._addFile.bind(this);
+        this._connectToExistingDaemon = this._connectToExistingDaemon.bind(this);
+        this._connectToIPFS = this._connectToIPFS.bind(this);
         this._getConfig = this._getConfig.bind(this);
         this._getNode = this._getNode.bind(this);
         this._initNode = this._initNode.bind(this);
-        this._addFile = this._addFile.bind(this);
-        this._addDirectory = this._addDirectory.bind(this);
         this._readAndSyncFiles = this._readAndSyncFiles.bind(this);
-        this._retryDaemonConnection = this._retryDaemonConnection.bind(this);
-        this._startDaemon = this._startDaemon.bind(this);
+        this._retryConnection = this._retryConnection.bind(this);
+        this._syncFiles = this._syncFiles.bind(this);
         this.setState = this.setState.bind(this);
         this.start = this.start.bind(this);
         this.quit = this.quit.bind(this);
@@ -84,29 +85,42 @@ class IPFSSync extends EventEmitter {
         return this;
     }
 
-    _addFile(fullPath) {
-        const fileName = basename(fullPath);
+    /**
+    * Wrap a file in a fake folder, then add it to IPFS to allow for file names
+    * in the URL.
+    *
+    * @param {String} path
+    * @return {Promise}
+    */
+    _addFile(path) {
+        logger.info('[IPFSSync] _addFile');
+        const fileName = basename(path);
         const fakeDirectory = basename(basename(fileName), extname(fileName)).trim();
         const file = {
             path: join(fakeDirectory, fileName),
-            content: fs.createReadStream(fullPath),
+            content: fs.createReadStream(path),
         };
 
-        return this.state.daemon.add([file], { wrap: true })
+        return this.state.ipfs.add([file], { wrap: true })
             .then((result) => {
                 const [fileObject, dirObject] = result;
                 fileObject.urlPath = join(dirObject.hash, fileName);
                 fileObject.name = fileName;
-                fileObject.path = fullPath;
+                fileObject.path = path;
                 return Promise.resolve([fileObject]);
-            })
-            .catch((error) => {
-                console.log(file.path, fileName, error);
             });
     }
 
+    /**
+     * Add an entire directory to IPFS, using the directory as the root
+     * hash.
+     *
+     * @param {String} path
+     * @return {Promise}
+     */
     _addDirectory(path) {
-        return this.state.daemon.util.addFromFs(path, { recursive: true })
+        logger.info('[IPFSSync] _addDirectory');
+        return this.state.ipfs.util.addFromFs(path, { recursive: true })
             .then((objects) => {
                 return new Promise((resolve) => {
                     const dirName = basename(path);
@@ -125,17 +139,15 @@ class IPFSSync extends EventEmitter {
     /**
      * Add the whole folder to IPFS, resolving with the new folder
      * hash and a list of files.
-     * @param  {Array} files
+     * @param  {Array} fileNames
      * @return {Promise}
      */
-    _addFilesToIPFS(fileNames) {
-        logger.info('[IPFSSync] _addFilesToIPFS');
+    _syncFiles(fileNames) {
+        logger.info('[IPFSSync] _syncFiles');
 
         if (fileNames.length < 1) {
-            return Promise.resolve({
-                files: [],
-                folder: this.state.folder,
-            });
+            // No files to sync
+            return this.setState({ files: [], synced: true });
         }
 
         const promises = fileNames.map((fileName) => {
@@ -160,30 +172,30 @@ class IPFSSync extends EventEmitter {
             });
         });
 
-
         return Promise.all(promises)
-            .then((groups) => [].concat(...groups));
+            .then((groups) => [].concat(...groups))
+            .then((files) => this.setState({ files, synced: true }));
     }
 
     /**
      * Retry connecting to the daemon.
      */
-    _retryDaemonConnection() {
-        logger.info('[IPFSSync] _retryDaemonConnection');
+    _retryConnection() {
+        logger.info('[IPFSSync] _retryConnection');
 
-        if (this.state.daemonRetries > MAX_DAEMON_RECONNECTS) {
-            logger.error('[IPFSSync] _retryDaemonConnection: Exceeded max connection retries', this.state.daemonRetries);
+        if (this.state.connectRetries > MAX_RECONNECTS) {
+            logger.error('[IPFSSync] _retryConnection: Exceeded max connection retries', this.state.connectRetries);
             return;
         }
 
         this.setState({
-            daemonRetries: this.state.daemonRetries + 1,
+            connectRetries: this.state.connectRetries + 1,
             synced: false,
         });
 
         this.start()
-            .then(() => this.setState({ daemonRetries: 0 }))
-            .catch((e) => logger.error('[IPFSSync] _retryDaemonConnection: ', e));
+            .then(() => this.setState({ connectRetries: 0 }))
+            .catch((e) => logger.error('[IPFSSync] _retryConnection: ', e));
     }
 
     /**
@@ -194,13 +206,11 @@ class IPFSSync extends EventEmitter {
         logger.info('[IPFSSync] _readAndSyncFiles');
         this.setState({ synced: false });
 
-
         return getFiles(this.state.folder.path)
-            .then(this._addFilesToIPFS)
-            .then((files) => this.setState({ files, folder: this.state.folder, synced: true }))
+            .then(this._syncFiles)
             .catch((e) => {
                 logger.error('[IPFSSync] _readAndSyncFiles: ', e);
-                this._retryDaemonConnection();
+                this._retryConnection();
             });
     }
 
@@ -209,6 +219,7 @@ class IPFSSync extends EventEmitter {
     * @return {Promise}
     */
     _getNode() {
+        logger.info('[IPFSSync] _getNode');
         return new Promise((resolve, reject) => {
             ipfsCtl.local(IPFS_REPO, {}, (err, node) => {
                 if (err) {
@@ -228,6 +239,7 @@ class IPFSSync extends EventEmitter {
     * @return {Promise}
     */
     _initNode(node) {
+        logger.info('[IPFSSync] _initNode');
         return new Promise((resolve, reject) => {
             if (node.initialized) {
                 resolve(node);
@@ -251,6 +263,7 @@ class IPFSSync extends EventEmitter {
     * @return {Promise}
     */
     _getConfig(node) {
+        logger.info('[IPFSSync] _getConfig');
         return new Promise((resolve, reject) => {
             node.getConfig('show', (err, configString) => {
                 if (err) {
@@ -275,6 +288,7 @@ class IPFSSync extends EventEmitter {
     * @return {Promise}
     */
     _connectToExistingDaemon(node) {
+        logger.info('[IPFSSync] _connectToExistingDaemon');
         return new Promise((resolve, reject) => {
             this._getConfig(node)
                 .then((config) => {
@@ -286,16 +300,17 @@ class IPFSSync extends EventEmitter {
     }
 
     /**
-     * Attempt to start a daemon, connecting to a possible running daemon
+     * Attempt to start an ipfs daemon, connecting to a possible running daemon
      * if we fail.
      * @param {Node} node
      * @return {Promise}
      */
-    _startDaemon(node) {
+    _connectToIPFS(node) {
+        logger.info('[IPFSSync] _connectToIPFS');
         return new Promise((resolve, reject) => {
             node.startDaemon((err, daemon) => {
                 if (err) {
-                    logger.error('[IPFSSync] startIPFSDaemon', err);
+                    logger.error('[IPFSSync] _connectToIPFS', err);
 
                     // Connect to an exising daemon if possible
                     return this._connectToExistingDaemon(node)
@@ -310,10 +325,11 @@ class IPFSSync extends EventEmitter {
 
 
     /**
-     * Attempt to stop daemon
+     * Attempt to stop the runninn daemon
      * @param {Node} node
      */
-    _stopDaemon(node) {
+    _stopIPFS(node) {
+        logger.info('[IPFSSync] _stopIPFS');
         node.stopDaemon((err, daemon) => {
             if (err) {
                 logger.error('[IPFSSync] stopIPFSDaemon', err);
@@ -361,8 +377,8 @@ class IPFSSync extends EventEmitter {
                 this.setState({ node });
                 return node;
             })
-            .then(this._startDaemon)
-            .then((daemon) => this.setState({ daemon, connected: true }))
+            .then(this._connectToIPFS)
+            .then((ipfs) => this.setState({ ipfs, connected: true }))
             .then(() => this._readAndSyncFiles())
             .catch((e) => logger.error('[IPFSSync] startIPFS: ', e));
     }
@@ -374,7 +390,7 @@ class IPFSSync extends EventEmitter {
         logger.info('[IPFSSync] quit');
 
         if (this._state.connected) {
-            this._stopDaemon(this._state.node);
+            this._stopIPFS(this._state.node);
         }
     }
 
