@@ -49,7 +49,7 @@ const FileList = ({
             {files.map((file) => <FileListItem
               name={file.name}
               path={file.path}
-              url={`${GATEWAY_URL}${file.urlPath}`} />
+              url={`${GATEWAY_URL}/${file.urlPath}`} />
             )}
         </ul>
     );
