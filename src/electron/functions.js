@@ -1,35 +1,37 @@
 const { basename } = require('path');
 const fse = require('fs-extra');
-const klaw = require('klaw');
+const fs = require('fs');
 
-const filterHiddenFiles = (item) => {
-    const base = basename(item);
-    return base === '.' || base[0] !== '.';
+/**
+ * Filter function for ignoring hidden files.
+ * @param {String} fileName
+ * @return {boolean}
+ */
+const filterHiddenFiles = (fileName) => {
+    const base = basename(fileName);
+    return !base.startsWith('.');
 };
 
+/**
+ * Ensure a directory exists, and list the contents.
+ * @param {String} dirPath
+ * @return {Promise}
+ */
 const getFiles = (dirPath) => {
     return new Promise((resolve, reject) => {
-        fse.ensureDir(dirPath, (err) => {
-            if (err) {
-                return reject(err);
+        fse.ensureDir(dirPath, (ensureErr) => {
+            if (ensureErr) {
+                return reject(ensureErr);
             }
 
-            const items = [];
-            return klaw(dirPath, { filter: filterHiddenFiles })
-                .on('data', (item) => {
-                    if (item.path === dirPath) {
-                        return;
-                    }
+            fs.readdir(dirPath, (readErr, files) => {
+                if (readErr) {
+                    return reject(readErr);
+                }
 
-                    if (item.stats.isDirectory()) {
-                        return;
-                    }
-
-                    items.push(item);
-                })
-                .on('end', () => {
-                    resolve(items);
-                });
+                files = files.filter(filterHiddenFiles);
+                return resolve(files);
+            });
         });
     });
 };

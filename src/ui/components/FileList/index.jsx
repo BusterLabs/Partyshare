@@ -42,14 +42,14 @@ const FileList = ({
         );
     }
 
-    files = files.sort((a, b) => new Date(b.stats.ctime) - new Date(a.stats.ctime));
+    // files = files.sort((a, b) => new Date(b.stats.ctime) - new Date(a.stats.ctime));
 
     return (
         <ul className={styles.this} {...props}>
             {files.map((file) => <FileListItem
-              name={basename(file.path)}
+              name={file.name}
               path={file.path}
-              url={`${GATEWAY_URL}/${folder.hash}/${relative(folder.path, file.path)}`} />
+              url={`${GATEWAY_URL}${file.urlPath}`} />
             )}
         </ul>
     );

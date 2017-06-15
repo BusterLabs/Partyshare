@@ -2680,9 +2680,9 @@ ip@^1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/ip/-/ip-1.1.5.tgz#bdded70114290828c0a039e72ef25f5aaec4354a"
 
-ipfs-api@^14.0.1, ipfs-api@^14.0.2:
+"ipfs-api@git://github.com/bhstahl/js-ipfs-api.git#add-with-querystrings":
   version "14.0.3"
-  resolved "https://registry.yarnpkg.com/ipfs-api/-/ipfs-api-14.0.3.tgz#a8701489e196c11f1c9be9ec5fb2910fcdd5e6e7"
+  resolved "git://github.com/bhstahl/js-ipfs-api.git#107c5c16162bf7c5f74d858ebc58644ea20924a5"
   dependencies:
     async "^2.4.1"
     bs58 "^4.0.0"
@@ -2725,13 +2725,13 @@ ipfs-unixfs@~0.1.11:
   dependencies:
     protocol-buffers "^3.2.1"
 
-ipfsd-ctl@^0.21.0:
+"ipfsd-ctl@git://github.com/bhstahl/js-ipfsd-ctl.git#add-with-querystrings":
   version "0.21.0"
-  resolved "https://registry.yarnpkg.com/ipfsd-ctl/-/ipfsd-ctl-0.21.0.tgz#d8cec5a3922a30ffcf1c771d6cd84ee4243985ef"
+  resolved "git://github.com/bhstahl/js-ipfsd-ctl.git#3ca3aa72bac92fe053a93c52e85fc7021458c652"
   dependencies:
     async "^2.4.0"
     go-ipfs-dep "0.4.9"
-    ipfs-api "^14.0.1"
+    ipfs-api "git://github.com/bhstahl/js-ipfs-api.git#add-with-querystrings"
     multiaddr "^2.3.0"
     once "^1.4.0"
     rimraf "^2.6.1"
