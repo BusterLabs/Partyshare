@@ -59,8 +59,8 @@
 }
 
 .copy_hit_area:hover .copy_button {
-    color: var(--dark-green);
-    background-color: var(--green);
+    color: var(--dark-blue);
+    background-color: var(--blue);
 }
 
 .copy_button {

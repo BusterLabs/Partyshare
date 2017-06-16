@@ -19,7 +19,7 @@
     z-index: 100;
     color: var(--dark-green);
     background-color: var(--green);
-    font-weight: 500;
+    font-weight: 400;
     font-size: 1.1rem;
     animation: fadeIn 180ms ease-out;
     animation-fill-mode: both;
