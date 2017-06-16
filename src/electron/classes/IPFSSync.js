@@ -104,7 +104,7 @@ class IPFSSync extends EventEmitter {
         return this.state.ipfs.add([file], { wrap: true })
             .then((result) => {
                 const [fileObject, dirObject] = result;
-                fileObject.urlPath = join(dirObject.hash, fileName);
+                fileObject.urlPath = encodeURI(join(dirObject.hash, fileName));
                 fileObject.name = fileName;
                 fileObject.path = path;
                 return Promise.resolve([fileObject]);
@@ -127,7 +127,7 @@ class IPFSSync extends EventEmitter {
                     const folder = objects.find((item) => dirName.indexOf(item.path) > -1);
                     const files = objects.filter((item) => item !== folder).map((file) => {
                         file.name = basename(file.path);
-                        file.urlPath = file.path.replace(folder.path, folder.hash);
+                        file.urlPath = encodeURI(file.path.replace(folder.path, folder.hash));
                         file.path = join(this.state.folder.path, file.path);
                         return file;
                     });
