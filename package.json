@@ -6,7 +6,7 @@
   "scripts": {
     "build_electron": "yarn fix_asar && build",
     "build_ui": "webpack",
-    "fix_asar": "sed -i '' 's|run(cmd, args|run(cmd.replace(\"app.asar\", \"app.asar.unpacked\"), args|' node_modules/ipfsd-ctl/src/exec.js",
+    "fix_asar": "sed -i 's|run(cmd, args|run(cmd.replace(\"app.asar\", \"app.asar.unpacked\"), args|' node_modules/ipfsd-ctl/src/exec.js",
     "lint": "eslint --ext .js --ext .jsx --format=node_modules/eslint-formatter-pretty src/",
     "preversion": "yarn build_ui",
     "release": "yarn build_ui && yarn fix_asar && build --draft",
