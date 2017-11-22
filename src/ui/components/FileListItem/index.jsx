@@ -17,7 +17,7 @@ const FileListItem = ({
         <span className={styles.icon}>
             { isImage(path) ?
                 <img className={styles.image} src={path} />
-            :
+                :
                 <IconFile className={styles.file} />
             }
         </span>
@@ -26,13 +26,13 @@ const FileListItem = ({
         </p>
         { url &&
             <div
-              className={styles.copy_hit_area}
-              title="Copy link to your clipboard"
-              role="button"
-              onClick={() => {
-                  clipboard.writeText(url, 'selection');
-                  ipcRenderer.send(IPC_EVENT_NOTIFICATION, 'Link copied to your clipboard');
-              }}
+                className={styles.copy_hit_area}
+                title="Copy link to your clipboard"
+                role="button"
+                onClick={() => {
+                    clipboard.writeText(url, 'selection');
+                    ipcRenderer.send(IPC_EVENT_NOTIFICATION, 'Link copied to your clipboard');
+                }}
             >
                 <span className={styles.copy_button}>
                     Copy Link
