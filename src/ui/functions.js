@@ -7,7 +7,7 @@ import mime from 'mime';
  * @return {Boolean}
  */
 export const isImage = (path) => {
-    const mimeType = mime.lookup(path);
+    const mimeType = mime.getType(path);
     if (!mimeType) {
         return false;
     }

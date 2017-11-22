@@ -50,7 +50,7 @@ module.exports = {
             path.resolve(__dirname, 'src', 'ui'),
             path.resolve(__dirname, 'src', 'electron'),
         ],
-        extensions: ['.js', '.jsx'],
+        extensions: ['.js', '.jsx', '.json'],
     },
     plugins: [extractCSSPlugin],
 };
