@@ -1,0 +1,32 @@
+os:
+- linux
+language: node_js
+node_js: 8
+sudo: required
+addons:
+  apt:
+    sources:
+    - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
+      key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
+    packages:
+    - yarn
+cache: apt
+install:
+- yarn
+script:
+- node --version
+- yarn --version
+- yarn build_ui
+before_deploy:
+- yarn build_electron
+- ls dist/
+deploy:
+  provider: releases
+  api_key:
+    secure: G8mivDdvQSbdPBbRjqsZQgJDkJbERLfW5jm7Qf0qMH6yKlCrhEmzpUGHgtik8ypIFkoWhRtLN5kil9kzB+HVLorlSXK8ollQJU+2aOqW3jBH+h4peB9RIoYgF+1kB97nVSm9lHmTsfMJ9JvJA5srr3MBEVyiDy6I9/PuCIOaE6uPBLWtqRxECJ/PPfFQiyAMhJ51aAl1dNyOuIs141XT50UyC1ZITSFMoGEHhmb5jbzDs9BPPm6SmsoMZ+jQ7vM4xISvdKkdF6rCedO/SKSQjR2m56pidBFinP5UTg9BTEG3Cc2FD4PEmQn+F1lrHScEQY6FJ8hUJZPSVXo3SJd9kQL8Sj+GZxgbkUQ8BwCRNT/owu3fNtTivCh+9p4DoztUGQh4Fr6j6fqVxtQ6e6hG2m9M+u0fS9nj1rT8eFXYRLBw6L5zZ2pfHdx4cgJZ+HN5jlfdIBbmPqnaMQmuam0t92LWM3B5+LF3Wh6JcjiEEwQ1PurA6HJK1qs2pUpeeUUjT1WLUsXahAffZQTi49Z2V1vwkaq7iZ2Hz18Mzy+sBAqvh3aree/Ss3orD1/8i16p0HomzVSfN/nH5UVYxBHNyjepRQHVgEjVuh69cfI6lU2EjC/l1fZwzupjYXmFQgGUhfghVaykvm1kybMIOySAKL3IHsYjBQq9VHYd3VWckoU=
+  file: dist/Partyshare.deb
+  skip_cleanup: true
+  on:
+    repo: hexagon6/Partyshare
+    branch: ci/upstream-build
+    tags: true
