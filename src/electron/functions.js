@@ -24,7 +24,7 @@ const getFiles = (dirPath) => {
                 return reject(ensureErr);
             }
 
-            fs.readdir(dirPath, (readErr, files) => {
+            return fs.readdir(dirPath, (readErr, files) => {
                 if (readErr) {
                     return reject(readErr);
                 }

@@ -2,7 +2,7 @@ const { autoUpdater } = require('electron-updater');
 const {
     dialog,
     ipcMain,
- } = require('electron');
+} = require('electron');
 const IPFSSync = require('./classes/IPFSSync.js');
 const logger = require('electron-log');
 const menubar = require('menubar');

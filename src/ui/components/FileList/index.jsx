@@ -7,10 +7,6 @@ import { shell, ipcRenderer } from 'electron';
 import {
     IPC_EVENT_HIDE_MENU,
 } from '../../../shared/constants';
-import {
-    basename,
-    relative,
-} from 'path';
 
 import styles from './FileList.css';
 
@@ -31,10 +27,10 @@ const FileList = ({
             <Center>
                 <p>Drag a file into your Partyshare folder to begin</p>
                 <Button
-                  onClick={() => {
-                      shell.openItem(folder.path);
-                      ipcRenderer.send(IPC_EVENT_HIDE_MENU);
-                  }}
+                    onClick={() => {
+                        shell.openItem(folder.path);
+                        ipcRenderer.send(IPC_EVENT_HIDE_MENU);
+                    }}
                 >
                     Reveal Folder
                 </Button>
@@ -47,9 +43,9 @@ const FileList = ({
     return (
         <ul className={styles.this} {...props}>
             {files.map((file) => <FileListItem
-              name={file.name}
-              path={file.path}
-              url={`${GATEWAY_URL}/${file.urlPath}`} />
+                name={file.name}
+                path={file.path}
+                url={`${GATEWAY_URL}/${file.urlPath}`} />
             )}
         </ul>
     );
