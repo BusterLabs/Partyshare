@@ -31,7 +31,7 @@ const FileListItem = ({
               role="button"
               onClick={() => {
                   clipboard.writeText(url);
-                  ipcRenderer.send(IPC_EVENT_NOTIFICATION, 'Link copied to your clipboard: ' + url);
+                  ipcRenderer.send(IPC_EVENT_NOTIFICATION, 'Link copied to your clipboard');
               }}
             >
                 <span className={styles.copy_button}>
