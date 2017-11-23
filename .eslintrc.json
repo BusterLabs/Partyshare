@@ -17,6 +17,7 @@
         ],
         "react/jsx-indent": ["warn", 4],
         "jsx-quotes": ["error", "prefer-double"],
-        "multiline-ternary": [0]
+        "multiline-ternary": [0],
+        "react/jsx-indent-props": ["true", 2]
     }
 }

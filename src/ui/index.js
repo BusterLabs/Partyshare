@@ -105,17 +105,17 @@ class Application extends Component {
 
         return (
             <div class={styles.this}
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={this.onDrop}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={this.onDrop}
             >
                 <Header>
                     <Button
-                      title="Quit Partyshare"
-                      onClick={this.openSettingsMenu}
-                      className={styles.header_button}
+                        title="Quit Partyshare"
+                        onClick={this.openSettingsMenu}
+                        className={styles.header_button}
                     >
                         <IconCog
-                          className={styles.header_button_icon}
+                            className={styles.header_button_icon}
                         />
                     </Button>
                     <Title>
@@ -123,12 +123,12 @@ class Application extends Component {
                         {connected && !synced && 'Syncing…'}
                     </Title>
                     <Button
-                      title="Open Folder"
-                      onClick={this.openFolder}
-                      className={styles.header_button}
+                        title="Open Folder"
+                        onClick={this.openFolder}
+                        className={styles.header_button}
                     >
                         <IconFolder
-                          className={styles.header_button_icon}
+                            className={styles.header_button_icon}
                         />
                     </Button>
                 </Header>
