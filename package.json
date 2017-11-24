@@ -4,7 +4,7 @@
   "description": "A file sharing app using IPFS (InterPlanetary File System)",
   "main": "src/electron/main.js",
   "scripts": {
-    "build_electron": "build",
+    "build_electron": "build --publish=never",
     "build_ui": "webpack",
     "lint": "eslint --ext .js --ext .jsx --format=node_modules/eslint-formatter-pretty src/",
     "run_electron": "ENV=dev electron src/electron/main.js",
@@ -89,7 +89,6 @@
       ],
       "category": "public.app-category.productivity",
       "icon": "icons"
-    },
-    "publish": "never"
+    }
   }
 }
