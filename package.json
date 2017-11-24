@@ -89,6 +89,7 @@
       ],
       "category": "public.app-category.productivity",
       "icon": "icons"
-    }
+    },
+    "publish": "never"
   }
 }
