@@ -24,7 +24,7 @@ before_deploy:
   - yarn build_electron
 
 deploy:
-  provider: release
+  provider: releases
   skip_cleanup: true
   file_glob: true
   file:
