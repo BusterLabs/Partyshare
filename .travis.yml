@@ -27,3 +27,4 @@ deploy:
   on:
     repo: BusterLabs/Partyshare
     branch: master
+    tags: true
