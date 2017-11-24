@@ -1,30 +1,22 @@
 matrix:
   include:
-    - os: osx
-      osx_image: xcode9.0
-      language: node_js
-      node_js: "8"
-      env:
-        - ELECTRON_CACHE=$HOME/.cache/electron
-        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
-
-cache:
-  directories:
-  - node_modules
-  - $HOME/.cache/electron
-  - $HOME/.cache/electron-builder
-
+  - os: osx
+    osx_image: xcode9.0
+    language: node_js
+    node_js: '8'
+    env:
+    - ELECTRON_CACHE=$HOME/.cache/electron
+    - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 cache: yarn
-
 script:
-  - yarn lint
-
+- yarn lint
 before_deploy:
-  - yarn build_ui
-  - yarn build_electron
-
+- yarn build_ui
+- yarn build_electron
 deploy:
   provider: releases
+  api_key:
+    secure: GnPsJYCTnMeP0SmM3sOjakTNoykQEmgRKwVSJjR11ggmRWCBujqZ3mgPO1PlZZ7zexA1UT47cxEVgP6NBBCAI+ef572RAPbedhKJ6MemNV5FHdelh517uFEwMh6o5PdQ5tlIGJqirFHSBFXw9D+igbPrLKLThThfnov3kj092sdD8OyzaT14NWX1bY2CAJ4O+9AJCo91mw5vXtHrrs0rZQzem67c3VSXPBf4ZJvK1VtyGO1qAYnRaRxzDl1YFwBzV9D1pIRYNWorjOf39ExnsJs8n2PIhrwGp7jkwfXgWINZCSxmGdgEDEyEn4KbOpnmVHXId5hXdWIkJr26A94hqwRbFliyWETLr4RbsnE59iN7S3lrXbxcvSJsgn0w2QPn5iqyzTrt4yN34yIp73RBbyc0WXo/kg+AZStF5s0FzkOaekZAjqzpNxai9SnTAu3nRz/+bAFfZgTpD0gseJNVHobqfIWRU0zFmvWuc1vG9/kX57WE/Mkn5dsLa18i08WHuCJ4R2TjRNpGnfu17CSv+qELg8NuHmh3Yw89KO8NFAcvMwSpWeeta1GGjwmqCsziQgTRoyNNngDjEhpCEZfWjz9282WgAjAwithVUMzLF94tDgxmpa2zsvUpdcNnmLRrJ6F05krKNgmiLKHP6JqiMNLfQoAU4PSC2DcLXrPKTbs=
   skip_cleanup: true
   file_glob: true
   file:
