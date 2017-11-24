@@ -1,6 +1,6 @@
 {
   "name": "partyshare.busterlabs.xyz",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "A file sharing app using IPFS (InterPlanetary File System)",
   "main": "src/electron/main.js",
   "scripts": {
