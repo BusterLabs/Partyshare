@@ -7,7 +7,7 @@ A free, open source file sharing application, built on the peer-to-peer hypermed
 It's a simple way to share files via IPFS.
 </h4>
 <p align="center">
-  <img width="250" src="https://partysha.re//example.gif">
+  <img width="250" src="https://partysha.re/example.gif">
   <br>
 </p>
 
@@ -18,6 +18,7 @@ You can download the latest version at [partysha.re](https://partysha.re). Pleas
 
 ##  Contribute
 
+### Development
 1. Take a look at the [open issues](https://github.com/BusterLabs/Partyshare/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22)
 2. Assign any to yourself that you'd like to work on
 3. Start coding:
@@ -27,3 +28,14 @@ You can download the latest version at [partysha.re](https://partysha.re). Pleas
     $ yarn install
     $ yarn start
     ```
+
+### Releases
+
+[![Build Status](https://travis-ci.org/BusterLabs/Partyshare.svg?branch=master)](https://travis-ci.org/BusterLabs/Partyshare)
+
+Releases are built by [Travis CI](https://travis-ci.org/BusterLabs/Partyshare), and automatically released [on Github](https://github.com/BusterLabs/Partyshare/releases) for every tagged commit pushed to master. To release a new version:
+
+```sh
+$ npm version
+$ git push origin master --tags
+```
