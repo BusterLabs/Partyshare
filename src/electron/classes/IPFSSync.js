@@ -6,6 +6,7 @@ const ipfsCtl = require('ipfsd-ctl');
 const ipfsAPI = require('ipfs-api');
 const {
     getFiles,
+    statWithPromise,
 } = require('../functions.js');
 const {
     basename,
@@ -174,6 +175,7 @@ class IPFSSync extends EventEmitter {
 
         return Promise.all(promises)
             .then((groups) => [].concat(...groups))
+            .then((files) => Promise.all(files.map((file) => statWithPromise(file))))
             .then((files) => this.setState({ files, synced: true }));
     }
 

@@ -36,8 +36,27 @@ const getFiles = (dirPath) => {
     });
 };
 
+/**
+ * Stat a file added to IPFS, wrapping the callback style in a promise.
+ * @param {Object} file
+ * @return {Promise}
+ */
+const statWithPromise = (file) => {
+    return new Promise((resolve, reject) => {
+        fs.stat(file.path, (err, stats) => {
+            if (err) {
+                return reject(err);
+            }
+
+            file.stats = stats;
+            return resolve(file);
+        });
+    });
+};
+
 
 module.exports = {
     getFiles,
+    statWithPromise,
 };
 
