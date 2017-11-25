@@ -9,7 +9,7 @@
 }
 
 .this:hover {
-    background-color: var(--light-gray);
+    background-color: var(--lightest-gray);
 }
 
 .icon,
