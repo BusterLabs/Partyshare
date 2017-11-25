@@ -8,7 +8,7 @@ const Button = ({
     ...props
 }) => (
     <button
-        lassName={`${styles.this} ${styles[type]} ${className ? className : ''}`}
+        className={`${styles.this} ${styles[type]} ${className ? className : ''}`}
         {...props}
     >
         { children }
