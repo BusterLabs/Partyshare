@@ -30,7 +30,7 @@ const FileListItem = ({
                 title="Copy link to your clipboard"
                 role="button"
                 onClick={() => {
-                    clipboard.writeText(url, 'selection');
+                    clipboard.writeText(url);
                     ipcRenderer.send(IPC_EVENT_NOTIFICATION, 'Link copied to your clipboard');
                 }}
             >
