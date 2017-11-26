@@ -39,8 +39,4 @@ deploy:
   on:
     repo: BusterLabs/Partyshare
     branch: master
-<<<<<<< Updated upstream
     tags: true
-=======
-    tags: true
->>>>>>> Stashed changes
