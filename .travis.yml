@@ -37,7 +37,7 @@ deploy:
     - dist/github/latest-{mac,linux}.json
     - dist/latest-{mac,linux}.yml
     - dist/partyshare.busterlabs.xyz-*-mac.{dmg,zip}
-    - dist/partyshare.busterlabs.xyz-*-linux.{deb,tar.gz}
+    - dist/partyshare.busterlabs.xyz-*-linux.{deb,tar.gz,AppImage}
   on:
     repo: BusterLabs/Partyshare
     branch: master
