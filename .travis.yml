@@ -1,9 +1,23 @@
+language: node_js
+node_js: '8'
 matrix:
   include:
   - os: osx
     osx_image: xcode9.0
-    language: node_js
-    node_js: '8'
+    env:
+    - ELECTRON_CACHE=$HOME/.cache/electron
+    - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+  - os: linux
+    sudo: required
+    addons:
+      apt:
+        sources:
+        - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
+          key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
+        packages:
+        - yarn
+    install: yarn
+    cache: apt
     env:
     - ELECTRON_CACHE=$HOME/.cache/electron
     - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
@@ -13,6 +27,7 @@ script:
 before_deploy:
 - yarn build_ui
 - yarn build_electron
+- ls dist/
 deploy:
   provider: releases
   api_key:
@@ -22,8 +37,8 @@ deploy:
   file:
     - dist/github/latest-mac.json
     - dist/latest-mac.yml
-    - dist/partyshare.busterlabs.xyz-*-mac.dmg
-    - dist/partyshare.busterlabs.xyz-*-mac.zip
+    - dist/partyshare.busterlabs.xyz-*-mac.{dmg,zip}
+    - dist/partyshare.busterlabs.xyz-*-linux.{deb,tar.gz}
   on:
     repo: BusterLabs/Partyshare
     branch: master
