@@ -27,7 +27,6 @@ script:
 before_deploy:
 - yarn build_ui
 - yarn build_electron
-- ls dist/
 deploy:
   provider: releases
   api_key:
