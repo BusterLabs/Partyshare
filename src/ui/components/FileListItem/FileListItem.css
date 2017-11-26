@@ -9,7 +9,7 @@
 }
 
 .this:hover {
-    background-color: var(--light-gray);
+    background-color: var(--lightest-gray);
 }
 
 .icon,
@@ -59,8 +59,8 @@
 }
 
 .copy_hit_area:hover .copy_button {
-    color: var(--dark-blue);
-    background-color: var(--blue);
+    color: var(--blue);
+    border: 1px solid var(--blue);
 }
 
 .copy_button {
@@ -70,5 +70,10 @@
     font-weight: 500;
     border-radius: var(--radius-size);
     transition: all 100ms ease-out;
+    border: 1px solid transparent;
+}
+
+.copy_button:active {
+    background-color: var(--light-blue);
 }
 

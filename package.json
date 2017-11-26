@@ -1,14 +1,12 @@
 {
   "name": "partyshare.busterlabs.xyz",
-  "version": "1.2.2",
+  "version": "1.2.7",
   "description": "A file sharing app using IPFS (InterPlanetary File System)",
   "main": "src/electron/main.js",
   "scripts": {
-    "build_electron": "build",
+    "build_electron": "build --publish=never",
     "build_ui": "webpack",
     "lint": "eslint --ext .js --ext .jsx --format=node_modules/eslint-formatter-pretty src/",
-    "preversion": "yarn build_ui",
-    "release": "yarn build_ui && build --draft",
     "run_electron": "ENV=dev electron src/electron/main.js",
     "start": "yarn watch & yarn run_electron",
     "watch": "webpack --progress --colors --watch"
@@ -52,7 +50,7 @@
   },
   "build": {
     "appId": "partyshare.busterlabs.xyz",
-    "artifactName": "${productName}.${ext}",
+    "artifactName": "${name}-${version}-${os}.${ext}",
     "asarUnpack": "node_modules/go-ipfs-dep",
     "productName": "Partyshare",
     "icon": "build_assets/partyshare.icns",
@@ -63,6 +61,16 @@
     "dmg": {
       "background": "build_assets/background.tiff",
       "title": "Install ${productName}"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg"
+        },
+        {
+          "target": "zip"
+        }
+      ]
     },
     "linux": {
       "target": [
@@ -81,13 +89,6 @@
       ],
       "category": "public.app-category.productivity",
       "icon": "icons"
-    },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "busterlabs",
-        "repo": "partyshare"
-      }
-    ]
+    }
   }
 }
