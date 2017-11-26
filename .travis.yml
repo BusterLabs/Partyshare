@@ -39,6 +39,7 @@ deploy:
     - dist/latest-mac.yml
     - dist/partyshare.busterlabs.xyz-*-mac.{dmg,zip}
     - dist/partyshare.busterlabs.xyz-*-linux.{deb,tar.gz}
+  draft: true
   on:
     repo: BusterLabs/Partyshare
     branch: master
