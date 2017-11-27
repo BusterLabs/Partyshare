@@ -27,8 +27,8 @@ function findAndAppendAssetUrlToSelector(assets, extension, selector) {
 }
 
 function handleResponse(res) {
-    findAndAppendAssetUrlToSelector(res.assets, '.AppImage', '.js-download-mac');
-    findAndAppendAssetUrlToSelector(res.assets, '.dmg', '.js-download-linux');
+    findAndAppendAssetUrlToSelector(res.assets, '.AppImage', '.js-download-linux');
+    findAndAppendAssetUrlToSelector(res.assets, '.dmg', '.js-download-mac');
 }
 
 function fetchDownloadLink() {
